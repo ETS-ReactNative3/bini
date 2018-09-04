@@ -6,20 +6,24 @@ import {
   View
 } from 'react-native';
 
-export default class SignIn extends React.Component {
+export default class Logo extends React.Component {
 
   static propTypes = {
-    fontSize: PropTypes.number
+    fontSize: PropTypes.number,
+    viewStyles: PropTypes.object,
+    textStyles: PropTypes.object
   };
 
   static defaultProps = {
-    fontSize: 60
+    fontSize: 60,
+    viewStyles: {},
+    textStyles: {}
   };
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={[styles.text, {fontSize: this.props.fontSize}]}>
+      <View style={[styles.container, this.props.viewStyles]}>
+        <Text style={[styles.text, this.props.textStyles, {fontSize: this.props.fontSize}]}>
           Bini
         </Text>
       </View>

@@ -7,6 +7,7 @@ import {
 import {Font} from 'expo';
 import Logo from './components/Logo/Logo.react';
 import SignIn from './views/SignIn/SignIn.react';
+import Home from './views/Home/Home.react';
 
 export default class App extends React.Component {
 
@@ -25,6 +26,7 @@ export default class App extends React.Component {
     if (!this.state.isReady) {
       return <View style={styles.container} />
     }
+    return <Home />;
     return (
       <View style={styles.container}>
         <Logo />
