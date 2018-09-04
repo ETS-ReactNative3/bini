@@ -1,11 +1,34 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View
+} from 'react-native';
+import {Font} from 'expo';
+import Logo from './components/Logo/Logo.react';
+import SignIn from './views/SignIn/SignIn.react';
 
 export default class App extends React.Component {
+
+  state = {
+    isReady: false
+  };
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      'pacifico': require('./assets/fonts/Pacifico-Regular.ttf')
+    });
+    this.setState({isReady: true});
+  }
+
   render() {
+    if (!this.state.isReady) {
+      return <View style={styles.container} />
+    }
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>Bini</Text>
+        <Logo />
+        <SignIn />
       </View>
     );
   }
@@ -20,6 +43,9 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#fff',
-    fontSize: 60
+    fontFamily: 'pacifico',
+    fontSize: 60,
+    textAlign: 'center',
+    width: '100%'
   }
 });
