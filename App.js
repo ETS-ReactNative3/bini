@@ -1,53 +1,33 @@
 import React from 'react';
 import {
-  StyleSheet,
-  Text,
+  StatusBar,
   View
 } from 'react-native';
-import {Font} from 'expo';
-import Logo from './components/Logo/Logo.react';
-import SignIn from './views/SignIn/SignIn.react';
+import {createStackNavigator} from 'react-navigation';
+
+import Initializer from './views/Initializer/Initializer.react';
+import Auth from './views/Auth/Auth.react';
 import Home from './views/Home/Home.react';
 
+const RootStack = createStackNavigator({
+  Initializer,
+  Auth,
+  Home
+}, {
+  initialRouteName: 'Initializer'
+});
+
 export default class App extends React.Component {
-
-  state = {
-    isReady: false
-  };
-
-  async componentDidMount() {
-    await Font.loadAsync({
-      'pacifico': require('./assets/fonts/Pacifico-Regular.ttf')
-    });
-    this.setState({isReady: true});
-  }
-
   render() {
-    if (!this.state.isReady) {
-      return <View style={styles.container} />
-    }
-    return <Home />;
     return (
-      <View style={styles.container}>
-        <Logo />
-        <SignIn />
+      <View style={{flex: 1}}>
+        {/* @todo: Figure out why StatusBar isn't working */}
+        <StatusBar
+          backgroundColor='#5f4b8b'
+          barStyle='light-content'
+        />
+        <RootStack />
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    backgroundColor: '#5f4b8b',
-    flex: 1,
-    justifyContent: 'center',
-  },
-  text: {
-    color: '#fff',
-    fontFamily: 'pacifico',
-    fontSize: 60,
-    textAlign: 'center',
-    width: '100%'
-  }
-});

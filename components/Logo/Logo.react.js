@@ -34,9 +34,10 @@ export default class Logo extends React.Component {
 const styles = StyleSheet.create({
   container: {
     alignSelf: 'stretch',
-    alignItems: 'center',
+    alignItems: 'stretch',
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    width: '100%'
   },
   text: {
     color: '#fff',
