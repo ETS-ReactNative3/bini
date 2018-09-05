@@ -21,6 +21,7 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={{flex: 1}}>
+        {/* @todo: Figure out why StatusBar isn't working */}
         <StatusBar
           backgroundColor='#5f4b8b'
           barStyle='light-content'

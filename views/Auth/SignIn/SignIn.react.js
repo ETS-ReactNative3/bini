@@ -62,7 +62,7 @@ export default class SignIn extends React.Component {
             backgroundColor='#477EFF'
             disabledStyle={{backgroundColor: '#6c7784'}}
             disabledTextStyle={{color: '#4b525b'}}
-            // @todo: Do this on successful navigation
+            // @todo: Do this on successful log in
             onPress={() => this.props.navigation.replace('Home')}
           />
         </View>
