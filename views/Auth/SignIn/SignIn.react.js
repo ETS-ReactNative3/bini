@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   View
 } from 'react-native';
@@ -12,6 +13,10 @@ import {
 import {upperFirst} from 'lodash';
 
 export default class SignIn extends React.Component {
+
+  static propTypes = {
+    navigation: PropTypes.object.isRequired
+  }
 
   state = {
     username: '',
@@ -30,7 +35,7 @@ export default class SignIn extends React.Component {
         enabled
         style={{
           justifyContent: 'flex-start',
-          flex: isFocused ? 3 : 1.25
+          height: '70%'
         }}
       >
         <SignInField
@@ -57,6 +62,8 @@ export default class SignIn extends React.Component {
             backgroundColor='#477EFF'
             disabledStyle={{backgroundColor: '#6c7784'}}
             disabledTextStyle={{color: '#4b525b'}}
+            // @todo: Do this on successful navigation
+            onPress={() => this.props.navigation.replace('Home')}
           />
         </View>
         <View style={{opacity: 0.25}}>
