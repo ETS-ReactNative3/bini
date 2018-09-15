@@ -12,51 +12,44 @@ import {
 } from 'react-native-elements';
 import {upperFirst} from 'lodash';
 import validator from 'validator';
-import firebase from 'firebase';
 import fire from '../../../Fire/Fire';
 
-export default class SignIn extends React.Component {
+export default class SignUp extends React.Component {
 
   static propTypes = {
     navigation: PropTypes.object.isRequired
   }
 
   state = {
+    username: '',
     email: '',
     password: ''
   };
 
-  signInWithEmail = async () => {
+  createAccount = async () => {
     if (!validator.isEmail(this.state.email)) {
       return; // @todo: Error messaging under the input if not email
     }
     try {
-      const user = await fire.app.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-        .then(async () => {
-          return await fire.app.auth().signInWithEmailAndPassword(this.state.email, this.state.password);
-        });
-      console.log('USER: ', user);
+      const userCredentials = await fire.app.auth().createUserWithEmailAndPassword(this.state.email, this.state.password);
+      await userCredentials.user.updateProfile({
+        username: this.state.username
+      });
       this.props.navigation.replace('Home');
     } catch (err) {
       console.warn(err); // @todo: Handle this. Generic error messaging toast?
     }
   };
 
-  signInWithFacebook = async () => {
-    return;
-    // @todo: do this
-    try {
-      const provider = new firebase.auth.FacebookAuthProvider();
-    } catch (err) {
-
-    }
-  };
+  stripWhiteSpace
 
   render() {
     const {
+      username,
       email,
       password
     } = this.state;
+    console.log(this.state);
     return (
       <View
         enabled
@@ -67,9 +60,14 @@ export default class SignIn extends React.Component {
         }}
       >
         <SignInField
+          property='username'
+          value={username}
+          onChangeText={(username) => this.setState({username: username.replace(/[^\w-]/g, '')})}
+        />
+        <SignInField
           property='email'
           value={email}
-          onChangeText={(email) => this.setState({email: email.replace(/[\s]/g, '')})}
+          onChangeText={(email) => this.setState({email: email.replace(/\s/g, '')})}
         />
         <SignInField
           property='password'
@@ -78,26 +76,16 @@ export default class SignIn extends React.Component {
         />
         <View style={{
           marginTop: 20,
-          marginBottom: 10
+          marginBottom: 20
         }}>
           <Button
-            disabled={!email || !password}
-            title='Sign In'
+            disabled={!username || !email || !password}
+            title='Create Account'
             backgroundColor='#477EFF'
             disabledStyle={{backgroundColor: '#6c7784'}}
             disabledTextStyle={{color: '#4b525b'}}
             // @todo: Do this on successful log in
-            onPress={this.signInWithEmail}
-          />
-        </View>
-        <View style={{
-          marginBottom: 20
-        }}>
-          <Button
-            title='Sign In With Facebook'
-            backgroundColor='#3b5998'
-            disabledStyle={{backgroundColor: '#6c7784'}}
-            onPress={this.signInWithFacebook}
+            onPress={this.createAccount}
           />
         </View>
         <View style={{opacity: 0.25}}>
@@ -107,10 +95,10 @@ export default class SignIn extends React.Component {
           marginTop: 20
         }}>
           <Button
-            title='Create Account'
+            title='Sign In'
             backgroundColor='#EDEDF9'
             color='#5f4b8b'
-            onPress={this.props.onCreateAccount}
+            onPress={this.props.onGoToSignIn}
           />
         </View>
       </View>
@@ -118,10 +106,10 @@ export default class SignIn extends React.Component {
   }
 }
 
-const SignInField = ({property, value, onChangeText, onFocus, onBlur}) => (
+const SignInField = ({property, label, value, onChangeText, onFocus, onBlur}) => (
   <View>
     <FormLabel labelStyle={{color: '#fff'}}>
-      {upperFirst(property)}
+      {label || upperFirst(property)}
     </FormLabel>
     <FormInput
       autoCapitalize='none'
