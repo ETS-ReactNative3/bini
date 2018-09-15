@@ -8,6 +8,7 @@ import {Font} from 'expo';
 import BlankView from '../../components/BlankView/BlankView.react';
 import Logo from '../../components/Logo/Logo.react';
 import SignIn from './SignIn/SignIn.react';
+import SignUp from './SignUp/SignUp.react';
 
 export default class Auth extends React.Component {
 
@@ -22,7 +23,8 @@ export default class Auth extends React.Component {
   }
 
   state = {
-    isReady: false
+    isReady: false,
+    isCreatingAccount: false
   };
 
   async componentDidMount() {
@@ -39,7 +41,18 @@ export default class Auth extends React.Component {
     return (
       <View style={styles.container}>
         <Logo />
-        <SignIn navigation={this.props.navigation} />
+        {this.state.isCreatingAccount
+          ? (
+            <SignUp
+              navigation={this.props.navigation}
+              onGoToSignIn={() => this.setState({isCreatingAccount: false})}
+            />
+          ) : (
+            <SignIn
+              navigation={this.props.navigation}
+              onCreateAccount={() => this.setState({isCreatingAccount: true})}
+            />
+          )}
       </View>
     );
   }
@@ -50,6 +63,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#5f4b8b',
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'center'
   }
 });

@@ -24,7 +24,7 @@ export default class App extends React.Component {
         {/* @todo: Figure out why StatusBar isn't working */}
         <StatusBar
           backgroundColor='#5f4b8b'
-          barStyle='light-content'
+          barStyle='dark-content'
         />
         <RootStack />
       </View>
