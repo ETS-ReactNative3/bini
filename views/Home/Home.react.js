@@ -1,57 +1,24 @@
 import React from 'react';
 import {
   View,
+  ScrollView,
   StyleSheet
 } from 'react-native';
 import {
   Header,
   Text,
-  Icon
+  Icon,
+  Button
 } from 'react-native-elements';
-import {appStore} from 'App.store';
+import {userStore} from 'stores/User/User.store';
 import Logo from 'components/Logo/Logo.react';
-
-class HomeTitle extends React.Component {
-  render() {
-    return (
-      <Header
-        leftComponent={{
-          icon: 'menu',
-          color: '#fff'
-        }}
-        centerComponent={{
-          text: 'Bini',
-          style: {
-            color: 'white',
-            flex: 1,
-            fontFamily: 'pacifico',
-            fontSize: 18,
-            textAlign: 'center'
-          }
-        }}
-        rightComponent={{
-          icon: 'person',
-          color: '#fff'
-        }}
-        backgroundColor='#5f4b8b'
-        innerContainerStyles={{
-          alignItems: 'center',
-        }}
-        outerContainerStyles={{
-          width: '100%',
-          // height: 80,
-          // marginTop: 0
-        }}
-      />
-    );
-  }
-}
+import vars from 'styles/vars';
 
 export default class Home extends React.Component {
 
   static navigationOptions = {
     headerStyle: {
-      backgroundColor: '#5f4b8b'
+      backgroundColor: vars.colors.purple
     },
     headerTitle: (
       <Logo
@@ -85,12 +52,65 @@ export default class Home extends React.Component {
   };
 
   render() {
-    console.log(appStore.user);
     return (
       <View style={styles.container}>
-        <Text>
-          Hello, {appStore.user.email}!
-        </Text>
+        <ScrollView style={{flex: 1}}>
+          <Text h1>
+            Hello, {userStore.user.email}!
+          </Text>
+        </ScrollView>
+        <HomeActions />
+      </View>
+    );
+  }
+}
+
+class HomeActions extends React.Component {
+  render() {
+    return (
+      <View style={{
+        flexDirection: 'row',
+        borderTopWidth: 2,
+        borderTopColor: 'rgba(0, 0, 0, 0.1)'
+      }}>
+        <View style={{width: '50%'}}>
+          <Button
+            icon={{name: 'schedule'}}
+            title='Plans'
+            titleStyle={{color: vars.colors.purple}}
+            buttonStyle={{backgroundColor: 'transparent'}}
+            onPress={() => console.log('tapped plans')}
+          />
+        </View>
+        <View
+          pointerEvents='box-none'
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            width: '100%',
+            alignItems: 'center',
+            zIndex: 1
+          }}
+        >
+          <Icon
+            reverse
+            raised
+            name='add'
+            underlayColor='transparent'
+            color={vars.colors.purple}
+            onPress={() => console.log('tapped schedule')}
+          />
+        </View>
+        <View style={{width: '50%'}}>
+          <Button
+            icon={{name: 'inbox'}}
+            title='Inbox'
+            titleStyle={{color: vars.colors.purple}}
+            buttonStyle={{backgroundColor: 'transparent'}}
+            onPress={() => console.log('tapped inbox')}
+          />
+        </View>
       </View>
     );
   }

@@ -6,15 +6,16 @@ import {
   Keyboard,
   TouchableWithoutFeedback
 } from 'react-native';
-import Logo from '../../components/Logo/Logo.react';
+import Logo from 'components/Logo/Logo.react';
 import SignIn from './SignIn/SignIn.react';
 import SignUp from './SignUp/SignUp.react';
+import vars from 'styles/vars';
 
 export default class Auth extends React.Component {
 
   static navigationOptions = {
     headerStyle: {
-      backgroundColor: '#5f4b8b',
+      backgroundColor: vars.colors.purple,
       height: 0
     }
   }
@@ -55,7 +56,7 @@ export default class Auth extends React.Component {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    backgroundColor: '#5f4b8b',
+    backgroundColor: vars.colors.purple,
     flex: 1,
     justifyContent: 'center'
   }

@@ -3,13 +3,14 @@ import {Font} from 'expo';
 import BlankView from 'components/BlankView/BlankView.react';
 import fire from 'Fire/Fire';
 import {dispatch} from 'lib/bosque';
-import {appActions} from 'App.store';
+import {userActions} from 'stores/User/User.actions';
+import vars from 'styles/vars';
 
 export default class Initializer extends React.Component {
 
   static navigationOptions = {
     headerStyle: {
-      backgroundColor: '#5f4b8b',
+      backgroundColor: vars.colors.purple,
       height: 0
     }
   }
@@ -24,8 +25,8 @@ export default class Initializer extends React.Component {
     });
     fire.auth().onAuthStateChanged((user) => {
       if (user) {
-        dispatch(appActions.SET_USER, user);
-        this.props.navigation.replace('Auth');
+        dispatch(userActions.SET_USER, user);
+        this.props.navigation.replace('Home');
       } else {
         this.props.navigation.replace('Auth');
       }
