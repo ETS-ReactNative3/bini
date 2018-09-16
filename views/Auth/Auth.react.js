@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   StyleSheet,
-  View
+  View,
+  Keyboard,
+  TouchableWithoutFeedback
 } from 'react-native';
-import {Font} from 'expo';
-import BlankView from '../../components/BlankView/BlankView.react';
 import Logo from '../../components/Logo/Logo.react';
 import SignIn from './SignIn/SignIn.react';
 import SignUp from './SignUp/SignUp.react';
@@ -14,6 +14,7 @@ export default class Auth extends React.Component {
 
   static navigationOptions = {
     headerStyle: {
+      backgroundColor: '#5f4b8b',
       height: 0
     }
   }
@@ -23,37 +24,30 @@ export default class Auth extends React.Component {
   }
 
   state = {
-    isReady: false,
     isCreatingAccount: false
   };
 
-  async componentDidMount() {
-    await Font.loadAsync({
-      'pacifico': require('../../assets/fonts/Pacifico-Regular.ttf')
-    });
-    this.setState({isReady: true});
-  }
-
   render() {
-    if (!this.state.isReady) {
-      return <BlankView />;
-    }
     return (
-      <View style={styles.container}>
-        <Logo />
-        {this.state.isCreatingAccount
-          ? (
-            <SignUp
-              navigation={this.props.navigation}
-              onGoToSignIn={() => this.setState({isCreatingAccount: false})}
-            />
-          ) : (
-            <SignIn
-              navigation={this.props.navigation}
-              onCreateAccount={() => this.setState({isCreatingAccount: true})}
-            />
-          )}
-      </View>
+      <TouchableWithoutFeedback
+        onPress={() => Keyboard.dismiss()}
+      >
+        <View style={styles.container}>
+          <Logo />
+          {this.state.isCreatingAccount
+            ? (
+              <SignUp
+                navigation={this.props.navigation}
+                onGoToSignIn={() => this.setState({isCreatingAccount: false})}
+              />
+            ) : (
+              <SignIn
+                navigation={this.props.navigation}
+                onCreateAccount={() => this.setState({isCreatingAccount: true})}
+              />
+            )}
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 }

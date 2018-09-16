@@ -3,7 +3,13 @@ import {
   View,
   StyleSheet
 } from 'react-native';
-import {Header} from 'react-native-elements';
+import {
+  Header,
+  Text,
+  Icon
+} from 'react-native-elements';
+import {appStore} from 'App.store';
+import Logo from 'components/Logo/Logo.react';
 
 class HomeTitle extends React.Component {
   render() {
@@ -32,7 +38,9 @@ class HomeTitle extends React.Component {
           alignItems: 'center',
         }}
         outerContainerStyles={{
-          width: '100%'
+          width: '100%',
+          // height: 80,
+          // marginTop: 0
         }}
       />
     );
@@ -42,13 +50,47 @@ class HomeTitle extends React.Component {
 export default class Home extends React.Component {
 
   static navigationOptions = {
-    headerTitle: <HomeTitle />
+    headerStyle: {
+      backgroundColor: '#5f4b8b'
+    },
+    headerTitle: (
+      <Logo
+        fontSize={20}
+      />
+    ),
+    headerLeft: (
+      <Icon
+        name='menu'
+        color='white'
+        underlayColor='transparent'
+        iconStyle={{
+          paddingLeft: 7.5,
+          paddingRight: 7.5
+        }}
+        onPress={() => console.log('tapped menu')}
+      />
+    ),
+    headerRight: (
+      <Icon
+        name='person'
+        color='white'
+        underlayColor='transparent'
+        iconStyle={{
+          paddingLeft: 7.5,
+          paddingRight: 7.5
+        }}
+        onPress={() => console.log('tapped person')}
+      />
+    )
   };
 
   render() {
+    console.log(appStore.user);
     return (
       <View style={styles.container}>
-
+        <Text>
+          Hello, {appStore.user.email}!
+        </Text>
       </View>
     );
   }
