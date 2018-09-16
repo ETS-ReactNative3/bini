@@ -1,12 +1,15 @@
 import React from 'react';
 import {Font} from 'expo';
-import BlankView from '../../components/BlankView/BlankView.react';
-import fire from '../../Fire/Fire';
+import BlankView from 'components/BlankView/BlankView.react';
+import fire from 'Fire/Fire';
+import {dispatch} from 'lib/bosque';
+import {appActions} from 'App.store';
 
 export default class Initializer extends React.Component {
 
   static navigationOptions = {
     headerStyle: {
+      backgroundColor: '#5f4b8b',
       height: 0
     }
   }
@@ -21,8 +24,8 @@ export default class Initializer extends React.Component {
     });
     fire.auth().onAuthStateChanged((user) => {
       if (user) {
-        console.log(user);
-        this.props.navigation.replace('Home');
+        dispatch(appActions.SET_USER, user);
+        this.props.navigation.replace('Auth');
       } else {
         this.props.navigation.replace('Auth');
       }

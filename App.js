@@ -1,7 +1,8 @@
 import React from 'react';
 import {
   StatusBar,
-  View
+  View,
+  SafeAreaView
 } from 'react-native';
 import {createStackNavigator} from 'react-navigation';
 
@@ -20,11 +21,15 @@ const RootStack = createStackNavigator({
 export default class App extends React.Component {
   render() {
     return (
-      <View style={{flex: 1}}>
+      <View style={{
+        backgroundColor: 'blue',
+        flex: 1,
+        height: '100%'
+      }}>
         {/* @todo: Figure out why StatusBar isn't working */}
-        <StatusBar
-          backgroundColor='#5f4b8b'
-          barStyle='dark-content'
+        <StatusBar  
+          barStyle='light-content'
+          backgroundColor='#ecf0f1'
         />
         <RootStack />
       </View>

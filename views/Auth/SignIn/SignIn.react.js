@@ -13,7 +13,7 @@ import {
 import {upperFirst} from 'lodash';
 import validator from 'validator';
 import firebase from 'firebase';
-import fire from '../../../Fire/Fire';
+import fire from 'Fire/Fire';
 
 export default class SignIn extends React.Component {
 
