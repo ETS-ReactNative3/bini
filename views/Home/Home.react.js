@@ -55,7 +55,7 @@ export default class Home extends React.Component {
     return (
       <View style={styles.container}>
         <ScrollView style={{flex: 1}}>
-          <Text h1>
+          <Text>
             Hello, {userStore.user.email}!
           </Text>
         </ScrollView>
@@ -74,11 +74,22 @@ class HomeActions extends React.Component {
         borderTopColor: 'rgba(0, 0, 0, 0.1)'
       }}>
         <View style={{width: '50%'}}>
-          <Button
+          {/* <Button
             icon={{name: 'schedule'}}
             title='Plans'
             titleStyle={{color: vars.colors.purple}}
             buttonStyle={{backgroundColor: 'transparent'}}
+            onPress={() => console.log('tapped plans')}
+          /> */}
+          <Icon
+            name='schedule'
+            color={vars.colors.purple}
+            containerStyle={{backgroundColor: 'transparent'}}
+            iconStyle={{
+              paddingRight: 15,
+              paddingTop: 7.5,
+              paddingBottom: 7.5
+            }}
             onPress={() => console.log('tapped plans')}
           />
         </View>
@@ -103,11 +114,15 @@ class HomeActions extends React.Component {
           />
         </View>
         <View style={{width: '50%'}}>
-          <Button
-            icon={{name: 'inbox'}}
-            title='Inbox'
-            titleStyle={{color: vars.colors.purple}}
-            buttonStyle={{backgroundColor: 'transparent'}}
+          <Icon
+            name='inbox'
+            color={vars.colors.purple}
+            containerStyle={{backgroundColor: 'transparent'}}
+            iconStyle={{
+              paddingLeft: 15,
+              paddingTop: 7.5,
+              paddingBottom: 7.5
+            }}
             onPress={() => console.log('tapped inbox')}
           />
         </View>

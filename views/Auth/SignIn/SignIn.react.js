@@ -6,6 +6,7 @@ import {
 import {
   FormLabel,
   FormInput,
+  Input,
   FormValidationMessage, // @todo: Add this
   Button,
   Divider
@@ -84,9 +85,9 @@ export default class SignIn extends React.Component {
           <Button
             disabled={!email || !password}
             title='Sign In'
-            backgroundColor='#477EFF'
+            buttonStyle={{backgroundColor: '#477EFF'}}
             disabledStyle={{backgroundColor: '#6c7784'}}
-            disabledTextStyle={{color: '#4b525b'}}
+            disabledTitleStyle={{color: '#4b525b'}}
             // @todo: Do this on successful log in
             onPress={this.signInWithEmail}
           />
@@ -96,7 +97,7 @@ export default class SignIn extends React.Component {
         }}>
           <Button
             title='Sign In With Facebook'
-            backgroundColor='#3b5998'
+            buttonStyle={{backgroundColor: '#3b5998'}}
             disabledStyle={{backgroundColor: '#6c7784'}}
             onPress={this.signInWithFacebook}
           />
@@ -109,8 +110,8 @@ export default class SignIn extends React.Component {
         }}>
           <Button
             title='Create Account'
-            backgroundColor='#EDEDF9'
-            color={vars.colors.purple}
+            buttonStyle={{backgroundColor: '#EDEDF9'}}
+            titleStyle={{color: vars.colors.purple}}
             onPress={this.props.onCreateAccount}
           />
         </View>
@@ -120,11 +121,9 @@ export default class SignIn extends React.Component {
 }
 
 const SignInField = ({property, value, onChangeText, onFocus, onBlur}) => (
-  <View>
-    <FormLabel labelStyle={{color: '#fff'}}>
-      {upperFirst(property)}
-    </FormLabel>
-    <FormInput
+    <Input
+      label={upperFirst(property)}
+      labelStyle={{color: '#fff'}}
       autoCapitalize='none'
       autoCorrect={false}
       onChangeText={onChangeText}
@@ -133,10 +132,10 @@ const SignInField = ({property, value, onChangeText, onFocus, onBlur}) => (
       onBlur={onBlur}
       underlineColorAndroid='#fff'
       textContentType={property}
-      inputStyle={{
-        color: '#fff',
-        paddingLeft: 10
+      inputStyle={{color: '#fff'}}
+      containerStyle={{
+        marginBottom: 15,
+        width: '100%'
       }}
     />
-  </View>
 );

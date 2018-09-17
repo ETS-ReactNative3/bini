@@ -35,18 +35,24 @@ export default class Auth extends React.Component {
       >
         <View style={styles.container}>
           <Logo />
-          {this.state.isCreatingAccount
-            ? (
-              <SignUp
-                navigation={this.props.navigation}
-                onGoToSignIn={() => this.setState({isCreatingAccount: false})}
-              />
-            ) : (
-              <SignIn
-                navigation={this.props.navigation}
-                onCreateAccount={() => this.setState({isCreatingAccount: true})}
-              />
-            )}
+          <View style={{
+            paddingLeft: 15,
+            paddingRight: 15,
+            width: '100%'
+          }}>
+            {this.state.isCreatingAccount
+              ? (
+                <SignUp
+                  navigation={this.props.navigation}
+                  onGoToSignIn={() => this.setState({isCreatingAccount: false})}
+                />
+              ) : (
+                <SignIn
+                  navigation={this.props.navigation}
+                  onCreateAccount={() => this.setState({isCreatingAccount: true})}
+                />
+              )}
+          </View>
         </View>
       </TouchableWithoutFeedback>
     );
