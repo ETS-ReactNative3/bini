@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   View,
-  ScrollView,
-  StyleSheet
+  ScrollView
 } from 'react-native';
 import {
   Text,
@@ -25,7 +24,7 @@ export default class Home extends React.Component {
   }));
 
   createEvent = () => {
-    this.props.navigation.navigate('EventDetails')
+    this.props.navigation.navigate('EventDetails');
   };
 
   render() {

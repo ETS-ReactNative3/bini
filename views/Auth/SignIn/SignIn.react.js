@@ -4,8 +4,6 @@ import {
   View
 } from 'react-native';
 import {
-  FormLabel,
-  FormInput,
   Input,
   FormValidationMessage, // @todo: Add this
   Button,
@@ -50,7 +48,7 @@ export default class SignIn extends React.Component {
     try {
       const provider = new firebase.auth.FacebookAuthProvider();
     } catch (err) {
-
+      console.log(err);
     }
   };
 
@@ -121,21 +119,21 @@ export default class SignIn extends React.Component {
 }
 
 const SignInField = ({property, value, onChangeText, onFocus, onBlur}) => (
-    <Input
-      label={upperFirst(property)}
-      labelStyle={{color: '#fff'}}
-      autoCapitalize='none'
-      autoCorrect={false}
-      onChangeText={onChangeText}
-      value={value}
-      onFocus={onFocus}
-      onBlur={onBlur}
-      underlineColorAndroid='#fff'
-      textContentType={property}
-      inputStyle={{color: '#fff'}}
-      containerStyle={{
-        marginBottom: 15,
-        width: '100%'
-      }}
-    />
+  <Input
+    label={upperFirst(property)}
+    labelStyle={{color: '#fff'}}
+    autoCapitalize='none'
+    autoCorrect={false}
+    onChangeText={onChangeText}
+    value={value}
+    onFocus={onFocus}
+    onBlur={onBlur}
+    underlineColorAndroid='#fff'
+    textContentType={property}
+    inputStyle={{color: '#fff'}}
+    containerStyle={{
+      marginBottom: 15,
+      width: '100%'
+    }}
+  />
 );

@@ -107,21 +107,21 @@ export default class SignUp extends React.Component {
 }
 
 const SignInField = ({property, value, label, onChangeText, onFocus, onBlur}) => (
-    <Input
-      label={label || upperFirst(property)}
-      labelStyle={{color: '#fff'}}
-      autoCapitalize='none'
-      autoCorrect={false}
-      onChangeText={onChangeText}
-      value={value}
-      onFocus={onFocus}
-      onBlur={onBlur}
-      underlineColorAndroid='#fff'
-      textContentType={property}
-      inputStyle={{color: '#fff'}}
-      containerStyle={{
-        marginBottom: 15,
-        width: '100%'
-      }}
-    />
+  <Input
+    label={label || upperFirst(property)}
+    labelStyle={{color: '#fff'}}
+    autoCapitalize='none'
+    autoCorrect={false}
+    onChangeText={onChangeText}
+    value={value}
+    onFocus={onFocus}
+    onBlur={onBlur}
+    underlineColorAndroid='#fff'
+    textContentType={property}
+    inputStyle={{color: '#fff'}}
+    containerStyle={{
+      marginBottom: 15,
+      width: '100%'
+    }}
+  />
 );
