@@ -49,3 +49,12 @@ export default class EventDetails extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'stretch',
+    backgroundColor: '#fff',
+    flex: 1,
+    justifyContent: 'flex-start'
+  }
+});
