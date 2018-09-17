@@ -59,28 +59,27 @@ export default class Home extends React.Component {
             Hello, {userStore.user.email}!
           </Text>
         </ScrollView>
-        <HomeActions />
+        <HomeActions navigation={this.props.navigation} />
       </View>
     );
   }
 }
 
 class HomeActions extends React.Component {
+
+  createEvent = () => {
+    this.props.navigation.navigate('EventDetails')
+  };
+
   render() {
     return (
       <View style={{
         flexDirection: 'row',
         borderTopWidth: 2,
-        borderTopColor: 'rgba(0, 0, 0, 0.1)'
+        borderTopColor: 'rgba(0, 0, 0, 0.1)',
+        zIndex: 1
       }}>
         <View style={{width: '50%'}}>
-          {/* <Button
-            icon={{name: 'schedule'}}
-            title='Plans'
-            titleStyle={{color: vars.colors.purple}}
-            buttonStyle={{backgroundColor: 'transparent'}}
-            onPress={() => console.log('tapped plans')}
-          /> */}
           <Icon
             name='schedule'
             color={vars.colors.purple}
@@ -110,7 +109,7 @@ class HomeActions extends React.Component {
             name='add'
             underlayColor='transparent'
             color={vars.colors.purple}
-            onPress={() => console.log('tapped schedule')}
+            onPress={this.createEvent}
           />
         </View>
         <View style={{width: '50%'}}>
