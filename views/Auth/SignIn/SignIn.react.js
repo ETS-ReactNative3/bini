@@ -4,8 +4,7 @@ import {
   View
 } from 'react-native';
 import {
-  FormLabel,
-  FormInput,
+  Input,
   FormValidationMessage, // @todo: Add this
   Button,
   Divider
@@ -14,6 +13,7 @@ import {upperFirst} from 'lodash';
 import validator from 'validator';
 import firebase from 'firebase';
 import fire from 'Fire/Fire';
+import vars from 'styles/vars';
 
 export default class SignIn extends React.Component {
 
@@ -48,7 +48,7 @@ export default class SignIn extends React.Component {
     try {
       const provider = new firebase.auth.FacebookAuthProvider();
     } catch (err) {
-
+      console.log(err);
     }
   };
 
@@ -83,9 +83,9 @@ export default class SignIn extends React.Component {
           <Button
             disabled={!email || !password}
             title='Sign In'
-            backgroundColor='#477EFF'
+            buttonStyle={{backgroundColor: '#477EFF'}}
             disabledStyle={{backgroundColor: '#6c7784'}}
-            disabledTextStyle={{color: '#4b525b'}}
+            disabledTitleStyle={{color: '#4b525b'}}
             // @todo: Do this on successful log in
             onPress={this.signInWithEmail}
           />
@@ -95,7 +95,7 @@ export default class SignIn extends React.Component {
         }}>
           <Button
             title='Sign In With Facebook'
-            backgroundColor='#3b5998'
+            buttonStyle={{backgroundColor: '#3b5998'}}
             disabledStyle={{backgroundColor: '#6c7784'}}
             onPress={this.signInWithFacebook}
           />
@@ -108,8 +108,8 @@ export default class SignIn extends React.Component {
         }}>
           <Button
             title='Create Account'
-            backgroundColor='#EDEDF9'
-            color='#5f4b8b'
+            buttonStyle={{backgroundColor: '#EDEDF9'}}
+            titleStyle={{color: vars.colors.purple}}
             onPress={this.props.onCreateAccount}
           />
         </View>
@@ -119,23 +119,21 @@ export default class SignIn extends React.Component {
 }
 
 const SignInField = ({property, value, onChangeText, onFocus, onBlur}) => (
-  <View>
-    <FormLabel labelStyle={{color: '#fff'}}>
-      {upperFirst(property)}
-    </FormLabel>
-    <FormInput
-      autoCapitalize='none'
-      autoCorrect={false}
-      onChangeText={onChangeText}
-      value={value}
-      onFocus={onFocus}
-      onBlur={onBlur}
-      underlineColorAndroid='#fff'
-      textContentType={property}
-      inputStyle={{
-        color: '#fff',
-        paddingLeft: 10
-      }}
-    />
-  </View>
+  <Input
+    label={upperFirst(property)}
+    labelStyle={{color: '#fff'}}
+    autoCapitalize='none'
+    autoCorrect={false}
+    onChangeText={onChangeText}
+    value={value}
+    onFocus={onFocus}
+    onBlur={onBlur}
+    underlineColorAndroid='#fff'
+    textContentType={property}
+    inputStyle={{color: '#fff'}}
+    containerStyle={{
+      marginBottom: 15,
+      width: '100%'
+    }}
+  />
 );

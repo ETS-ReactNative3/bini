@@ -4,15 +4,15 @@ import {
   View
 } from 'react-native';
 import {
-  FormLabel,
-  FormInput,
+  Input,
   FormValidationMessage, // @todo: Add this
   Button,
   Divider
 } from 'react-native-elements';
 import {upperFirst} from 'lodash';
 import validator from 'validator';
-import fire from '../../../Fire/Fire';
+import fire from 'Fire/Fire';
+import vars from 'styles/vars';
 
 export default class SignUp extends React.Component {
 
@@ -83,7 +83,7 @@ export default class SignUp extends React.Component {
             title='Create Account'
             backgroundColor='#477EFF'
             disabledStyle={{backgroundColor: '#6c7784'}}
-            disabledTextStyle={{color: '#4b525b'}}
+            disabledTitleStyle={{color: '#4b525b'}}
             // @todo: Do this on successful log in
             onPress={this.createAccount}
           />
@@ -96,8 +96,8 @@ export default class SignUp extends React.Component {
         }}>
           <Button
             title='Sign In'
-            backgroundColor='#EDEDF9'
-            color='#5f4b8b'
+            buttonStyle={{backgroundColor: '#EDEDF9'}}
+            titleStyle={{color: vars.colors.purple}}
             onPress={this.props.onGoToSignIn}
           />
         </View>
@@ -106,24 +106,22 @@ export default class SignUp extends React.Component {
   }
 }
 
-const SignInField = ({property, label, value, onChangeText, onFocus, onBlur}) => (
-  <View>
-    <FormLabel labelStyle={{color: '#fff'}}>
-      {label || upperFirst(property)}
-    </FormLabel>
-    <FormInput
-      autoCapitalize='none'
-      autoCorrect={false}
-      onChangeText={onChangeText}
-      value={value}
-      onFocus={onFocus}
-      onBlur={onBlur}
-      underlineColorAndroid='#fff'
-      textContentType={property}
-      inputStyle={{
-        color: '#fff',
-        paddingLeft: 10
-      }}
-    />
-  </View>
+const SignInField = ({property, value, label, onChangeText, onFocus, onBlur}) => (
+  <Input
+    label={label || upperFirst(property)}
+    labelStyle={{color: '#fff'}}
+    autoCapitalize='none'
+    autoCorrect={false}
+    onChangeText={onChangeText}
+    value={value}
+    onFocus={onFocus}
+    onBlur={onBlur}
+    underlineColorAndroid='#fff'
+    textContentType={property}
+    inputStyle={{color: '#fff'}}
+    containerStyle={{
+      marginBottom: 15,
+      width: '100%'
+    }}
+  />
 );

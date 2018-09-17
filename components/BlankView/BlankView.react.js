@@ -4,6 +4,7 @@ import {
   View,
   Text
 } from 'react-native';
+import vars from 'styles/vars';
 
 export default class BlankView extends React.Component {
 
@@ -12,7 +13,7 @@ export default class BlankView extends React.Component {
   };
 
   static defaultProps = {
-    backgroundColor: '#5f4b8b'
+    backgroundColor: vars.colors.purple
   }
 
   render() {
