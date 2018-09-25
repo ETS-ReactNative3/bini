@@ -15,7 +15,7 @@ export default class Auth extends React.Component {
 
   static navigationOptions = {
     headerStyle: {
-      backgroundColor: vars.colors.purple,
+      backgroundColor: vars.colors.main,
       height: 0
     }
   }
@@ -62,7 +62,7 @@ export default class Auth extends React.Component {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    backgroundColor: vars.colors.purple,
+    backgroundColor: vars.colors.main,
     flex: 1,
     justifyContent: 'center'
   }

@@ -31,7 +31,7 @@ export default class Home extends React.Component {
     return (
       <View style={{
         alignItems: 'stretch',
-        backgroundColor: '#fff',
+        backgroundColor: vars.colors.bg,
         flex: 1,
         justifyContent: 'flex-start'
       }}>
@@ -43,7 +43,7 @@ export default class Home extends React.Component {
         <BottomButtonRow>
           <Icon
             name='schedule'
-            color={vars.colors.purple}
+            color={vars.colors.main}
             containerStyle={{backgroundColor: 'transparent'}}
             iconStyle={{
               paddingRight: 15,
@@ -54,7 +54,7 @@ export default class Home extends React.Component {
           />
           <Icon
             name='inbox'
-            color={vars.colors.purple}
+            color={vars.colors.main}
             containerStyle={{backgroundColor: 'transparent'}}
             iconStyle={{
               paddingLeft: 15,
@@ -96,7 +96,7 @@ class AddEventButton extends React.Component {
           raised
           name='add'
           underlayColor='transparent'
-          color={vars.colors.purple}
+          color={vars.colors.main}
           onPress={this.props.onPress}
         />
       </View>
@@ -109,6 +109,7 @@ class BottomButtonRow extends React.Component {
     const width = `${100 / this.props.children.length}%`;
     return (
       <View style={{
+        backgroundColor: vars.palette.white,
         flexDirection: 'row',
         borderTopWidth: 2,
         borderTopColor: 'rgba(0, 0, 0, 0.1)',

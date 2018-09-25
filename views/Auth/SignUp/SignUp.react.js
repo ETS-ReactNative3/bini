@@ -11,7 +11,7 @@ import {
 } from 'react-native-elements';
 import {upperFirst} from 'lodash';
 import validator from 'validator';
-import fire from 'Fire/Fire';
+import fire from 'resources/Fire';
 import vars from 'styles/vars';
 
 export default class SignUp extends React.Component {
@@ -97,7 +97,7 @@ export default class SignUp extends React.Component {
           <Button
             title='Sign In'
             buttonStyle={{backgroundColor: '#EDEDF9'}}
-            titleStyle={{color: vars.colors.purple}}
+            titleStyle={{color: vars.colors.main}}
             onPress={this.props.onGoToSignIn}
           />
         </View>
