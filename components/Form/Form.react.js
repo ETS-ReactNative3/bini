@@ -9,6 +9,7 @@ import {
 import {
   Text,
   Icon,
+  Button as RNEButton,
   Input as RNEInput,
   colors as RNEColors
 } from 'react-native-elements';
@@ -107,7 +108,8 @@ class NormalizedDatePicker extends React.Component {
           }}
           customStyles={{
             dateInput: styles.datePickerInput,
-            dateText: styles.datePickerText
+            dateText: styles.datePickerText,
+            placeholderText: styles.datePickerText
           }}
           {...this.props}
         />
@@ -116,7 +118,8 @@ class NormalizedDatePicker extends React.Component {
   }
 }
 
-export class Date extends React.Component {
+export class DateInput extends React.Component {
+
   render() {
     return (
       <NormalizedDatePicker
@@ -135,13 +138,13 @@ export class Date extends React.Component {
   }
 }
 
-export class Time extends React.Component {
+export class TimeInput extends React.Component {
   render() {
     return (
       <NormalizedDatePicker
         {...this.props}
         mode='time'
-        format='hh:mm a'
+        format='hh:mm A'
         iconComponent={(
           <Icon
             type='font-awesome'
@@ -154,7 +157,7 @@ export class Time extends React.Component {
   }
 }
 
-export class Datetime extends React.Component {
+export class DatetimeInput extends React.Component {
   render() {
     return (
       <NormalizedDatePicker
@@ -174,6 +177,30 @@ export class Datetime extends React.Component {
 
 export class Button extends React.Component {
 
+  static propTypes = {
+    buttonStyle: PropTypes.object,
+    backgroundColor: PropTypes.string
+  };
+
+  static defaultProps = {
+    buttonStyle: {},
+    backgroundColor: vars.colors.main
+  };
+
+  render() {
+    const buttonStyleWithDefaults = {
+      backgroundColor: this.props.backgroundColor,
+      ...this.props.buttonStyle
+    };
+    // eslint-disable-next-line no-unused-vars
+    const {buttonStyle, ...passthroughProps} = this.props;
+    return (
+      <RNEButton
+        buttonStyle={buttonStyleWithDefaults}
+        {...passthroughProps}
+      />
+    );
+  }
 }
 
 const styles = StyleSheet.create({

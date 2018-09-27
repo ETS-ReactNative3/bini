@@ -3,10 +3,11 @@ import {
   View,
   StyleSheet
 } from 'react-native';
+import moment from 'moment';
 import {
   Form,
-  Date,
-  Time,
+  DateInput,
+  TimeInput,
   Input,
   TextArea,
   Button
@@ -42,6 +43,20 @@ export default class EventDetails extends React.Component {
 
   updateDescription = this.makeInputSetter('description');
 
+  updateDate = (val, dateObj) => {
+    const formatted = moment(dateObj).format('YYYY-MM-DD');
+    this.setState({
+      event: this.state.event.set('startDate', formatted)
+    });
+  }
+
+  updateTime = (val, dateObj) => {
+    const formatted = moment(dateObj).format('hh:mm A');
+    this.setState({
+      event: this.state.event.set('startTime', formatted)
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -52,19 +67,17 @@ export default class EventDetails extends React.Component {
             onChangeText={this.updateName}
             value={this.state.event.name}
           />
-          <Date
+          <DateInput
             label='Start Date'
-            date='2016-05-15'
+            date={this.state.event.startDate}
             placeholder='Pick a date'
-            minDate='2016-05-01'
-            // maxDate='2016-06-01'
-            onDateChange={() => {}}
+            onDateChange={this.updateDate}
           />
-          <Time
+          <TimeInput
             label='Start Time'
             placeholder='Pick a time'
-            date='20:00'
-            onDateChange={() => {}}
+            date={this.state.event.startTime}
+            onDateChange={this.updateTime}
           />
           <Input
             label='Location'
@@ -77,6 +90,9 @@ export default class EventDetails extends React.Component {
             placeholder='What does the future hold in store?'
             onChangeText={this.updateDescription}
             value={this.state.event.name}
+          />
+          <Button
+            title='Create Event'
           />
         </Form>
       </View>

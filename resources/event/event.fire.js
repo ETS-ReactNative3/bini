@@ -3,14 +3,24 @@ import fire from '../Fire';
 
 const collectionName = 'events';
 
+export const inviteStatus = {
+  pending: 'pending',
+  maybe: 'maybe',
+  accepted: 'accepted'
+};
+
 export class Event extends Record({
   name: '',
-  datetime: null,
+  startDate: null,
+  startTime: null,
+  endDate: null, // @todo: implement
+  endTime: null, // @todo: implement
   location: '',
   description: '',
   createdAt: null,
   updatedAt: '',
-  id: null
+  id: null,
+  invited: {} // userId: inviteStatus
 }) {
 
   collectionName = collectionName;
