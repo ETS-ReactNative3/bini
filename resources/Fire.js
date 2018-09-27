@@ -6,7 +6,8 @@ class Fire {
     this.app = firebase.initializeApp(config);
   }
 
-  // Auth
+  getServerTimestamp = () => firebase.database.ServerValue.TIMESTAMP;
+
   auth = () => this.app.auth();
 }
 

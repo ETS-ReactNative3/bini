@@ -31,8 +31,6 @@ export default class EventDetails extends React.Component {
     return (value) => {
       this.setState({
         event: this.state.event.set(property, value)
-      }, () => {
-        console.log(this.state.event.toJS());
       });
     };
   }
@@ -55,6 +53,11 @@ export default class EventDetails extends React.Component {
     this.setState({
       event: this.state.event.set('startTime', formatted)
     });
+  }
+
+  handleCreate = () => {
+    console.log(JSON.stringify(this.state.event.toJS(), null, 2));
+    this.state.event.save();
   }
 
   render() {
@@ -89,10 +92,11 @@ export default class EventDetails extends React.Component {
             label='Description'
             placeholder='What does the future hold in store?'
             onChangeText={this.updateDescription}
-            value={this.state.event.name}
+            value={this.state.event.description}
           />
           <Button
-            title='Create Event'
+            title='Create Plans'
+            onPress={this.handleCreate}
           />
         </Form>
       </View>

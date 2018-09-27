@@ -1,5 +1,6 @@
 import {Record} from 'immutable';
 import fire from '../Fire';
+import firebase from 'firebase';
 
 const collectionName = 'events';
 
@@ -18,7 +19,7 @@ export class Event extends Record({
   location: '',
   description: '',
   createdAt: null,
-  updatedAt: '',
+  updatedAt: null,
   id: null,
   invited: {} // userId: inviteStatus
 }) {
@@ -26,6 +27,22 @@ export class Event extends Record({
   collectionName = collectionName;
 
   save() {
-    fire.app.db.collection(collectionName).add(this.toJS());
+    const path = `${collectionName}${this.id ? `/${this.id}`: ''}`;
+    const eventRef = fire.app.database().ref(path);
+    if (this.id) {
+      // @todo: Do this
+    } else {
+      const newEventRef = eventRef.push();
+      newEventRef.set({
+        ...this.toJS(),
+        id: newEventRef.key,
+        createdAt: fire.getServerTimestamp(),
+        updatedAt: fire.getServerTimestamp()
+      }).then((res) => {
+        debugger;
+      }).catch((err) => {
+        debugger;
+      });
+    }
   }
 }
