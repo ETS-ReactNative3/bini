@@ -1,12 +1,24 @@
 import firebase from 'firebase';
+import 'firebase/firestore';
 import {firebaseConfig} from '../secrets';
+import {makeConstants} from 'lib/makeConstants';
 
 class Fire {
   constructor(config) {
     this.app = firebase.initializeApp(config);
+    this.db = firebase.firestore();
+    this.db.settings({
+      timestampsInSnapshots: true
+    });
   }
 
-  getServerTimestamp = () => firebase.database.ServerValue.TIMESTAMP;
+  collections = makeConstants(
+    'users',
+    'usernames',
+    'events'
+  );
+
+  getServerTimestamp = () => firebase.firestore.FieldValue.serverTimestamp();
 
   auth = () => this.app.auth();
 }

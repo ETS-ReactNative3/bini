@@ -56,7 +56,6 @@ export default class EventDetails extends React.Component {
   }
 
   handleCreate = () => {
-    console.log(JSON.stringify(this.state.event.toJS(), null, 2));
     this.state.event.save();
   }
 

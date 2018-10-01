@@ -1,8 +1,5 @@
 import {Record} from 'immutable';
 import fire from '../Fire';
-import firebase from 'firebase';
-
-const collectionName = 'events';
 
 export const inviteStatus = {
   pending: 'pending',
@@ -24,24 +21,22 @@ export class Event extends Record({
   invited: {} // userId: inviteStatus
 }) {
 
-  collectionName = collectionName;
-
-  save() {
-    const path = `${collectionName}${this.id ? `/${this.id}`: ''}`;
-    const eventRef = fire.app.database().ref(path);
+  async save() {
     if (this.id) {
       // @todo: Do this
     } else {
-      const newEventRef = eventRef.push();
-      newEventRef.set({
+      const newEventRef = fire.db
+        .collection(fire.collections.events)
+        .doc();
+      await newEventRef.set({
         ...this.toJS(),
-        id: newEventRef.key,
+        id: newEventRef.id,
         createdAt: fire.getServerTimestamp(),
         updatedAt: fire.getServerTimestamp()
       }).then((res) => {
-        debugger;
+        console.log('Event created!', res);
       }).catch((err) => {
-        debugger;
+        console.error(err);
       });
     }
   }

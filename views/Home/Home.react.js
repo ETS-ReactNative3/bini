@@ -8,10 +8,15 @@ import {
   Text,
   Icon
 } from 'react-native-elements';
-import {userStore} from 'stores/User/User.store';
+
 import Logo from 'components/Logo/Logo.react';
+import Event from 'components/Event/Event.react';
 import vars from 'styles/vars';
+
+import {userStore} from 'stores/User/User.store';
+
 import makeNavigationHeader from 'lib/makeNavigationHeader';
+import fire from 'resources/Fire';
 
 export default class Home extends React.Component {
 
@@ -23,9 +28,38 @@ export default class Home extends React.Component {
     onRightPress: () => console.log('onRightPress')
   }));
 
+  state = {
+    events: []
+  }
+
+  async componentDidMount() {
+    const events = [];
+    const eventsSnapshot = await fire.db.collection(fire.collections.events).get();
+    eventsSnapshot.forEach((doc) => {
+      events.push(doc.data());
+    });
+    this.setState({events}, () => console.log(JSON.stringify(this.state, null, 2)));
+  }
+
   createEvent = () => {
     this.props.navigation.navigate('EventDetails');
   };
+
+  renderEvents() {
+    if (this.state.events.length === 0) {
+      return (
+        <Text style={{
+          color: vars.colors.textLight,
+          textAlign: 'center',
+          paddingTop: 40
+        }}>
+          You have no upcoming events
+        </Text>
+      );
+    }
+
+    return this.state.events.map((event) => <Event event={event} key={event.id} />);
+  }
 
   render() {
     return (
@@ -36,9 +70,7 @@ export default class Home extends React.Component {
         justifyContent: 'flex-start'
       }}>
         <ScrollView style={{flex: 1}}>
-          <Text>
-            Hello, {userStore.user.email}!
-          </Text>
+          {this.renderEvents()}
         </ScrollView>
         <BottomButtonRow>
           <Icon
