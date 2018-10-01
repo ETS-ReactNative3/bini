@@ -2,7 +2,7 @@ const palette = {
   white: '#FFFFFF',
   black: '#161616',
   gray: '#383838',
-  lightGray: '#636363',
+  lightGray: '#727272',
   purple: '#584DA0',
   whitePurple: '#FBF9FF',
   skyBlue: '#3C91E6',

@@ -33,12 +33,13 @@ export default class Home extends React.Component {
   }
 
   async componentDidMount() {
-    const events = [];
-    const eventsSnapshot = await fire.db.collection(fire.collections.events).get();
-    eventsSnapshot.forEach((doc) => {
-      events.push(doc.data());
+    fire.db.collection(fire.collections.events).onSnapshot((eventsSnapshot) => {
+      const events = [];
+      eventsSnapshot.forEach((doc) => {
+        events.push(doc.data());
+      });
+      this.setState({events});
     });
-    this.setState({events}, () => console.log(JSON.stringify(this.state, null, 2)));
   }
 
   createEvent = () => {
@@ -49,7 +50,9 @@ export default class Home extends React.Component {
     if (this.state.events.length === 0) {
       return (
         <Text style={{
-          color: vars.colors.textLight,
+          color: vars.colors.textMeta,
+          fontWeight: 'bold',
+          fontStyle: 'italic',
           textAlign: 'center',
           paddingTop: 40
         }}>

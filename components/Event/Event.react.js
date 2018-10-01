@@ -4,6 +4,7 @@ import {
   Text,
   Card
 } from 'react-native-elements';
+
 import vars from 'styles/vars';
 
 export default class Event extends React.Component {
@@ -13,7 +14,6 @@ export default class Event extends React.Component {
   }
 
   render() {
-    // Component this out
     return (
       <Card
         title={this.props.event.name}
@@ -26,14 +26,7 @@ export default class Event extends React.Component {
           color: vars.colors.textMeta,
           fontSize: 12
         }}>
-          Start Date: 01.02.2018
-        </Text>
-        <Text style={{
-          fontStyle: 'italic',
-          color: vars.colors.textMeta,
-          fontSize: 12
-        }}>
-          Start Time: 01.02.2018
+          {this.props.event.startDate || 'date tbd'} @ {this.props.event.startTime || 'time tbd'}
         </Text>
       </Card>
     );

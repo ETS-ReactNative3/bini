@@ -55,8 +55,10 @@ export default class EventDetails extends React.Component {
     });
   }
 
-  handleCreate = () => {
-    this.state.event.save();
+  handleCreate = async () => {
+    const that = this;
+    await this.state.event.save();
+    that.props.navigation.pop();
   }
 
   render() {
