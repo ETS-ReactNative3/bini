@@ -11,7 +11,7 @@ import {
 import makeNavigationHeader from 'lib/makeNavigationHeader';
 import {Event} from 'resources/event/event.fire';
 
-export default class EventDetails extends React.Component {
+export default class InviteFriends extends React.Component {
 
   static navigationOptions = makeNavigationHeader(({navigation}) => ({
     title: 'Create',
@@ -53,12 +53,12 @@ export default class EventDetails extends React.Component {
   }
 
   handleCreate = async () => {
-    if (!this.state.event.name) {
+    const that = this;
+    if (!that.state.event.name) {
       this.setState({hasEventError: true});
     } else {
-      // @todo: Go to friends screen
-      // await this.state.event.save();
-      // this.props.navigation.pop();
+      await this.state.event.save();
+      that.props.navigation.pop();
     }
   }
 

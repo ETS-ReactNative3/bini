@@ -56,7 +56,7 @@ export default class Home extends React.Component {
           textAlign: 'center',
           paddingTop: 40
         }}>
-          You have no upcoming events
+          {'You don\'t have any upcoming events\n\nGo ahead and get something going!'}
         </Text>
       );
     }
