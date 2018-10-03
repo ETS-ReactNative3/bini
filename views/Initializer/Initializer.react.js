@@ -1,7 +1,7 @@
 import React from 'react';
 import {Font} from 'expo';
 import BlankView from 'components/BlankView/BlankView.react';
-import fire from 'Fire/Fire';
+import fire from 'resources/Fire';
 import {dispatch} from 'lib/bosque';
 import {userActions} from 'stores/User/User.actions';
 import vars from 'styles/vars';
@@ -10,7 +10,7 @@ export default class Initializer extends React.Component {
 
   static navigationOptions = {
     headerStyle: {
-      backgroundColor: vars.colors.purple,
+      backgroundColor: vars.colors.main,
       height: 0
     }
   }

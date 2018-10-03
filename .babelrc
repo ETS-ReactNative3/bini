@@ -11,7 +11,7 @@
       "alias": {
         "assets": "./assets",
         "components": "./components",
-        "Fire": "./Fire",
+        "resources": "./resources",
         "lib": "./lib",
         "stores": "./stores",
         "styles": "./styles",

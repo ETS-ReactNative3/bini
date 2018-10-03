@@ -13,7 +13,7 @@ export default class BlankView extends React.Component {
   };
 
   static defaultProps = {
-    backgroundColor: vars.colors.purple
+    backgroundColor: vars.colors.main
   }
 
   render() {

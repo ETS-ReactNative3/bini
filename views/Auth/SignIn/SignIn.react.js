@@ -12,7 +12,7 @@ import {
 import {upperFirst} from 'lodash';
 import validator from 'validator';
 import firebase from 'firebase';
-import fire from 'Fire/Fire';
+import fire from 'resources/Fire';
 import vars from 'styles/vars';
 
 export default class SignIn extends React.Component {
@@ -109,7 +109,7 @@ export default class SignIn extends React.Component {
           <Button
             title='Create Account'
             buttonStyle={{backgroundColor: '#EDEDF9'}}
-            titleStyle={{color: vars.colors.purple}}
+            titleStyle={{color: vars.colors.main}}
             onPress={this.props.onCreateAccount}
           />
         </View>
