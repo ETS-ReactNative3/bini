@@ -19,7 +19,12 @@ const colors = {
   textMeta: palette.lightGray
 };
 
+const sizers = {
+  viewPadding: 20
+};
+
 export default {
   colors,
-  palette
+  palette,
+  sizers
 };

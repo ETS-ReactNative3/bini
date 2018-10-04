@@ -13,8 +13,6 @@ import Logo from 'components/Logo/Logo.react';
 import Event from 'components/Event/Event.react';
 import vars from 'styles/vars';
 
-import {userStore} from 'stores/User/User.store';
-
 import makeNavigationHeader from 'lib/makeNavigationHeader';
 import fire from 'resources/Fire';
 

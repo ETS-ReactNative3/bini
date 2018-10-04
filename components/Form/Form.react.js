@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  ActivityIndicator,
   ScrollView,
   View,
   Platform,
@@ -34,7 +33,7 @@ export class Form extends React.Component {
         style={{
           backgroundColor: vars.colors.bg,
           flex: 1,
-          padding: 20
+          padding: vars.sizers.viewPadding
         }}
       >
         {this.props.children}
@@ -238,3 +237,4 @@ const styles = StyleSheet.create({
     fontSize: 17
   }
 });
+

@@ -11,6 +11,9 @@ import {
 import makeNavigationHeader from 'lib/makeNavigationHeader';
 import {Event} from 'resources/event/event.fire';
 
+import {dispatch} from 'lib/bosque';
+import {createEventActions} from './CreateEvent.actions';
+
 export default class EventDetails extends React.Component {
 
   static navigationOptions = makeNavigationHeader(({navigation}) => ({
@@ -52,13 +55,12 @@ export default class EventDetails extends React.Component {
     });
   }
 
-  handleCreate = async () => {
+  navigateToInviteFriends = () => {
     if (!this.state.event.name) {
       this.setState({hasEventError: true});
     } else {
-      // @todo: Go to friends screen
-      // await this.state.event.save();
-      // this.props.navigation.pop();
+      dispatch(createEventActions.SET_EVENT, this.state.event);
+      this.props.navigation.push('InviteFriends');
     }
   }
 
@@ -99,8 +101,8 @@ export default class EventDetails extends React.Component {
           value={this.state.event.description}
         />
         <Button
-          title='Create Plans'
-          onPress={this.handleCreate}
+          title='Invite Friends'
+          onPress={this.navigateToInviteFriends}
         />
       </Form>
     );
