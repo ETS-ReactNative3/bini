@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Set} from 'immutable';
 import {
   ScrollView,
   View,
@@ -7,7 +8,9 @@ import {
 } from 'react-native';
 import {
   Text,
-  Card
+  Card,
+  CheckBox,
+  Icon
 } from 'react-native-elements';
 
 import {
@@ -34,7 +37,7 @@ export default class InviteFriends extends React.Component {
 
   state = {
     friends: [],
-    invitees: [],
+    invitees: Set(),
     isReady: false
   }
 
@@ -55,6 +58,13 @@ export default class InviteFriends extends React.Component {
       });
   }
 
+  toggleFriend = (friendId) => {
+    const method = this.state.invitees.includes(friendId) ? 'delete' : 'add';
+    this.setState({
+      invitees: this.state.invitees[method](friendId)
+    });
+  };
+
   renderFriends = () => {
     /**
      * @todo: No friends view
@@ -62,6 +72,8 @@ export default class InviteFriends extends React.Component {
     return this.state.friends.map((friend, i) => (
       <Friend
         friend={friend}
+        toggleFriend={this.toggleFriend}
+        isInvited={this.state.invitees.includes(friend.id)}
         key={i}
       />
     ));
@@ -91,20 +103,30 @@ export default class InviteFriends extends React.Component {
 class Friend extends React.Component {
 
   static propTypes = {
-    friend: PropTypes.object
+    friend: PropTypes.object,
+    toggleFriend: PropTypes.func
   }
+
+  handlePress = () => {
+    this.props.toggleFriend(this.props.friend.id);
+  };
 
   render() {
     return (
       <View>
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={this.handlePress}>
           <Card
             containerStyle={{
               margin: 0,
               marginBottom: 15
             }}
+            wrapperStyle={{
+              alignItems: 'center',
+              flexDirection: 'row',
+              justifyContent: 'space-between'
+            }}
           >
-            <View>
+            <View style={{marginRight: 10}}>
               <Text style={{
                 fontWeight: 'bold'
               }}>
@@ -119,7 +141,11 @@ class Friend extends React.Component {
               </Text>
             </View>
             <View>
-
+              <Icon
+                type='font-awesome'
+                name={this.props.isInvited ? 'dot-circle-o' : 'circle-o'}
+                color={this.props.isInvited ? vars.colors.main : '#969696'}
+              />
             </View>
           </Card>
         </TouchableWithoutFeedback>
