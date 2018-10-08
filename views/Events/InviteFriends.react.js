@@ -18,8 +18,11 @@ import {
 } from 'components/Form/Form.react';
 import makeNavigationHeader from 'lib/makeNavigationHeader';
 
-import {userStore} from 'stores/User/User.store';
+import {dispatch} from 'lib/bosque';
+import {createEventActions} from './CreateEvent.actions';
 import {createEventStore} from './CreateEvent.store';
+import {userStore} from 'stores/User/User.store';
+import {Event} from 'resources/event/event.fire';
 import fire from 'resources/Fire';
 import vars from 'styles/vars';
 
@@ -80,6 +83,14 @@ export default class InviteFriends extends React.Component {
   }
 
   createEvent = async () => {
+
+    const friendsObj = this.state.invitees.reduce((acc, friendId) => {
+      acc[friendId] = Event.inviteStatuses.pending;
+      return acc;
+    }, {});
+
+    dispatch(createEventActions.SET_EVENT, createEventStore.event.set('invitees', friendsObj));
+
     await createEventStore.event.save();
     this.props.navigation.replace('Home');
   };
