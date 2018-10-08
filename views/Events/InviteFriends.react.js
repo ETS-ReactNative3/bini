@@ -9,7 +9,6 @@ import {
 import {
   Text,
   Card,
-  CheckBox,
   Icon
 } from 'react-native-elements';
 
@@ -90,8 +89,8 @@ export default class InviteFriends extends React.Component {
     }, {});
 
     dispatch(createEventActions.SET_EVENT, createEventStore.event.set('invitees', friendsObj));
-
     await createEventStore.event.save();
+    dispatch(createEventActions.RESET);
     this.props.navigation.replace('Home');
   };
 

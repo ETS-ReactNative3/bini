@@ -10,6 +10,7 @@ class CreateEventStore extends Store {
       event: null
     });
     this.addListener(createEventActions.SET_EVENT, this.makeSetter('event'));
+    this.addListener(createEventActions.RESET, this.reset);
   }
 }
 
