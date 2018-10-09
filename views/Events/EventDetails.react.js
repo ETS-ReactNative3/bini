@@ -27,6 +27,10 @@ export default class EventDetails extends React.Component {
     hasEventError: false
   };
 
+  componentWillUnmount() {
+    dispatch(createEventActions.RESET);
+  }
+
   makeInputSetter = (property) => {
     return (value) => {
       this.setState({
@@ -101,6 +105,7 @@ export default class EventDetails extends React.Component {
           value={this.state.event.description}
         />
         <Button
+          pushToBottom
           title='Invite Friends'
           onPress={this.navigateToInviteFriends}
         />

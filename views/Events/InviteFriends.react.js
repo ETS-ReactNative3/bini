@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Set} from 'immutable';
 import {
-  ScrollView,
   View,
   TouchableWithoutFeedback
 } from 'react-native';
@@ -12,9 +11,9 @@ import {
   Icon
 } from 'react-native-elements';
 
-import {
-  Button
-} from 'components/Form/Form.react';
+import {Button} from 'components/Form/Form.react';
+import {ScrollView} from 'components/ViewComponents/ScrollView.react';
+
 import makeNavigationHeader from 'lib/makeNavigationHeader';
 
 import {dispatch} from 'lib/bosque';
@@ -87,7 +86,6 @@ export default class InviteFriends extends React.Component {
       acc[friendId] = Event.inviteStatuses.pending;
       return acc;
     }, {});
-
     dispatch(createEventActions.SET_EVENT, createEventStore.event.set('invitees', friendsObj));
     await createEventStore.event.save();
     dispatch(createEventActions.RESET);
@@ -96,9 +94,10 @@ export default class InviteFriends extends React.Component {
 
   render() {
     return (
-      <ScrollView style={{padding: vars.sizers.viewPadding}}>
+      <ScrollView>
         {this.renderFriends()}
         <Button
+          pushToBottom
           title='Create Event'
           onPress={this.createEvent}
         />

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  ScrollView,
+  // ScrollView,
   View,
   Platform,
   StyleSheet
@@ -15,6 +15,7 @@ import {
 } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import LoadingBlockingView from 'components/LoadingBlockingView/LoadingBlockingView.react';
+import {ScrollView} from 'components/ViewComponents/ScrollView.react';
 import vars from 'styles/vars';
 
 export class Form extends React.Component {
@@ -29,13 +30,7 @@ export class Form extends React.Component {
 
   render() {
     return (
-      <ScrollView
-        style={{
-          backgroundColor: vars.colors.bg,
-          flex: 1,
-          padding: vars.sizers.viewPadding
-        }}
-      >
+      <ScrollView>
         {this.props.children}
         {!this.props.isReady ? <LoadingBlockingView /> : null}
       </ScrollView>
@@ -181,7 +176,8 @@ export class Button extends React.Component {
 
   static propTypes = {
     buttonStyle: PropTypes.object,
-    backgroundColor: PropTypes.string
+    backgroundColor: PropTypes.string,
+    pushToBottom: PropTypes.bool
   };
 
   static defaultProps = {
@@ -198,6 +194,12 @@ export class Button extends React.Component {
     const {buttonStyle, ...passthroughProps} = this.props;
     return (
       <RNEButton
+        containerStyle={this.props.pushToBottom
+          ? {
+            flex: 1,
+            justifyContent: 'flex-end'
+          }
+          : {}}
         buttonStyle={buttonStyleWithDefaults}
         {...passthroughProps}
       />
@@ -237,4 +239,3 @@ const styles = StyleSheet.create({
     fontSize: 17
   }
 });
-
