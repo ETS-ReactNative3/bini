@@ -1,7 +1,7 @@
 import {Record} from 'immutable';
 import fire from '../Fire';
 
-export const inviteStatus = {
+export const inviteStatuses = {
   pending: 'pending',
   maybe: 'maybe',
   accepted: 'accepted'
@@ -18,8 +18,10 @@ export class Event extends Record({
   createdAt: null,
   updatedAt: null,
   id: null,
-  invited: {} // userId: inviteStatus
+  invitees: {} // userId: inviteStatus
 }) {
+
+  static inviteStatuses = inviteStatuses;
 
   async save() {
     if (this.id) {

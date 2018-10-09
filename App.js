@@ -1,8 +1,7 @@
 import React from 'react';
 import {
   StatusBar,
-  View,
-  SafeAreaView
+  View
 } from 'react-native';
 import {createStackNavigator} from 'react-navigation';
 
@@ -10,12 +9,14 @@ import Initializer from './views/Initializer/Initializer.react';
 import Auth from './views/Auth/Auth.react';
 import Home from './views/Home/Home.react';
 import EventDetails from './views/Events/EventDetails.react';
+import InviteFriends from './views/Events/InviteFriends.react';
 
 const RootStack = createStackNavigator({
   Initializer,
   Auth,
   Home,
-  EventDetails
+  EventDetails,
+  InviteFriends
 }, {
   initialRouteName: 'Initializer'
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  ScrollView,
+  // ScrollView,
   View,
   Platform,
   StyleSheet
@@ -14,32 +14,25 @@ import {
   colors as RNEColors
 } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
+import LoadingBlockingView from 'components/LoadingBlockingView/LoadingBlockingView.react';
+import {ScrollView} from 'components/ViewComponents/ScrollView.react';
 import vars from 'styles/vars';
-
-/**
- * {
- *   name: value
- * }
- */
 
 export class Form extends React.Component {
 
-  handleChange = () => {
-
+  static propTypes = {
+    isReady: PropTypes.bool
   };
 
-  processChildren = () => {
-    return this.props.children;
+  static defaultProps = {
+    isReady: true
   };
 
   render() {
     return (
-      <ScrollView style={{
-        backgroundColor: vars.colors.bg,
-        flex: 1,
-        padding: 20
-      }}>
-        {this.processChildren()}
+      <ScrollView>
+        {this.props.children}
+        {!this.props.isReady ? <LoadingBlockingView /> : null}
       </ScrollView>
     );
   }
@@ -51,6 +44,10 @@ class NormalizedInput extends React.Component {
       <RNEInput
         labelStyle={{color: vars.colors.main}}
         containerStyle={styles.container}
+        errorStyle={{
+          color: vars.colors.error,
+          fontWeight: 'bold'
+        }}
         {...this.props}
       />
     );
@@ -179,7 +176,8 @@ export class Button extends React.Component {
 
   static propTypes = {
     buttonStyle: PropTypes.object,
-    backgroundColor: PropTypes.string
+    backgroundColor: PropTypes.string,
+    pushToBottom: PropTypes.bool
   };
 
   static defaultProps = {
@@ -196,6 +194,12 @@ export class Button extends React.Component {
     const {buttonStyle, ...passthroughProps} = this.props;
     return (
       <RNEButton
+        containerStyle={this.props.pushToBottom
+          ? {
+            flex: 1,
+            justifyContent: 'flex-end'
+          }
+          : {}}
         buttonStyle={buttonStyleWithDefaults}
         {...passthroughProps}
       />

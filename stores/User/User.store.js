@@ -11,6 +11,12 @@ class UserStore extends Store {
     });
     this.addListener(userActions.SET_USER, this.makeSetter('user'));
   }
+
+  getUserId() {
+    return this.user
+      ? this.user.uid
+      : null;
+  }
 }
 
 export const userStore = new UserStore('UserStore');

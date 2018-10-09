@@ -1,8 +1,4 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet
-} from 'react-native';
 import moment from 'moment';
 import {
   Form,
@@ -15,6 +11,9 @@ import {
 import makeNavigationHeader from 'lib/makeNavigationHeader';
 import {Event} from 'resources/event/event.fire';
 
+import {dispatch} from 'lib/bosque';
+import {createEventActions} from './CreateEvent.actions';
+
 export default class EventDetails extends React.Component {
 
   static navigationOptions = makeNavigationHeader(({navigation}) => ({
@@ -24,8 +23,13 @@ export default class EventDetails extends React.Component {
   }));
 
   state = {
-    event: new Event()
+    event: new Event(),
+    hasEventError: false
   };
+
+  componentWillUnmount() {
+    dispatch(createEventActions.RESET);
+  }
 
   makeInputSetter = (property) => {
     return (value) => {
@@ -55,61 +59,57 @@ export default class EventDetails extends React.Component {
     });
   }
 
-  handleCreate = async () => {
-    const that = this;
-    await this.state.event.save();
-    that.props.navigation.pop();
+  navigateToInviteFriends = () => {
+    if (!this.state.event.name) {
+      this.setState({hasEventError: true});
+    } else {
+      dispatch(createEventActions.SET_EVENT, this.state.event);
+      this.props.navigation.push('InviteFriends');
+    }
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        <Form>
-          <Input
-            label='Name'
-            placeholder='E.g. Pizza Party Fun Times'
-            onChangeText={this.updateName}
-            value={this.state.event.name}
-          />
-          <DateInput
-            label='Start Date'
-            date={this.state.event.startDate}
-            placeholder='Pick a date'
-            onDateChange={this.updateDate}
-          />
-          <TimeInput
-            label='Start Time'
-            placeholder='Pick a time'
-            date={this.state.event.startTime}
-            onDateChange={this.updateTime}
-          />
-          <Input
-            label='Location'
-            placeholder='E.g. 123 Fake St.'
-            onChangeText={this.updateLocation}
-            value={this.state.event.location}
-          />
-          <TextArea
-            label='Description'
-            placeholder='What does the future hold in store?'
-            onChangeText={this.updateDescription}
-            value={this.state.event.description}
-          />
-          <Button
-            title='Create Plans'
-            onPress={this.handleCreate}
-          />
-        </Form>
-      </View>
+      <Form>
+        <Input
+          label='Name'
+          placeholder='E.g. Pizza Party Fun Times'
+          onChangeText={this.updateName}
+          value={this.state.event.name}
+          errorMessage={this.state.hasEventError
+            ? 'This field is required'
+            : null}
+        />
+        <DateInput
+          label='Start Date'
+          date={this.state.event.startDate}
+          placeholder='Pick a date'
+          onDateChange={this.updateDate}
+        />
+        <TimeInput
+          label='Start Time'
+          placeholder='Pick a time'
+          date={this.state.event.startTime}
+          onDateChange={this.updateTime}
+        />
+        <Input
+          label='Location'
+          placeholder='E.g. 123 Fake St.'
+          onChangeText={this.updateLocation}
+          value={this.state.event.location}
+        />
+        <TextArea
+          label='Description'
+          placeholder='What does the future hold in store?'
+          onChangeText={this.updateDescription}
+          value={this.state.event.description}
+        />
+        <Button
+          pushToBottom
+          title='Invite Friends'
+          onPress={this.navigateToInviteFriends}
+        />
+      </Form>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'stretch',
-    backgroundColor: '#fff',
-    flex: 1,
-    justifyContent: 'flex-start'
-  }
-});
