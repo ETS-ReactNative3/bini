@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   View,
-  ScrollView
+  ScrollView,
+  TouchableOpacity
 } from 'react-native';
 import {
   Text,
@@ -59,7 +60,20 @@ export default class Home extends React.Component {
       );
     }
 
-    return this.state.events.map((event) => <Event event={event} key={event.id} />);
+    return this.state.events.map((event) => (
+      <TouchableOpacity
+        key={event.id}
+        activeOpacity={0.5}
+        onPress={() => {
+          this.props.navigation.navigate({
+            routeName: 'Event',
+            params: {event}
+          });
+        }}
+      >
+        <Event event={event} />
+      </TouchableOpacity>
+    ));
   }
 
   render() {
