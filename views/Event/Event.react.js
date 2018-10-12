@@ -53,13 +53,26 @@ export default class Event extends React.Component {
 
   renderMessages() {
     if (!this.store.isReady) {
-      return 'Loading...';
+      return (
+        <Text>
+          Loading...
+        </Text>
+      );
     }
     if (this.store.isEmpty) {
-      return 'No chats found :-(';
+      return (
+        <Text>
+          No chats found :-(
+        </Text>
+      );
     }
-    return this.store.chat.messages.reduce((acc, message) => {
-      return acc + '\n\n' + message.content;
+    return this.store.chat.messages.map((message, i) => {
+      return (
+        <Message
+          message={message}
+          key={i}
+        />
+      );
     }, '');
   }
 
@@ -79,13 +92,37 @@ export default class Event extends React.Component {
   }
 }
 
+class Message extends React.Component {
+  render() {
+    console.log(this.props);
+    const {
+      displayName,
+      username,
+      content
+    } = this.props.message;
+    return (
+      <View>
+        <Text>
+          {displayName ? displayName : `@${username}`}
+        </Text>
+        <Text>
+          {content}
+        </Text>
+      </View>
+    );
+  }
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1
   },
   messagesWrapper: {
-    backgroundColor: 'pink',
+    padding: 10,
     flexGrow: 1
+  },
+  message: {
+
   },
   inputWrapper: {
     backgroundColor: 'white'
