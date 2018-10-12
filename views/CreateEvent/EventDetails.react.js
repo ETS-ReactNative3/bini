@@ -9,7 +9,7 @@ import {
   Button
 } from 'components/Form/Form.react';
 import makeNavigationHeader from 'lib/makeNavigationHeader';
-import {Event} from 'resources/event/event.fire';
+import {EventResource} from 'resources/Event/Event.resource';
 
 import {dispatch} from 'lib/bosque';
 import {createEventActions} from './CreateEvent.actions';
@@ -23,7 +23,7 @@ export default class EventDetails extends React.Component {
   }));
 
   state = {
-    event: new Event(),
+    event: new EventResource(),
     hasEventError: false
   };
 

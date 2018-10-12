@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import {
   View,
   Platform,
-  StyleSheet
+  StyleSheet,
+  KeyboardAvoidingView
 } from 'react-native';
 import {
   Text,
@@ -29,10 +30,15 @@ export class Form extends React.Component {
 
   render() {
     return (
-      <ScrollView>
-        {this.props.children}
-        {!this.props.isReady ? <LoadingBlockingView /> : null}
-      </ScrollView>
+      <KeyboardAvoidingView
+        behavior='padding'
+        style={{flex: 1}}
+      >
+        <ScrollView>
+          {this.props.children}
+          {!this.props.isReady ? <LoadingBlockingView /> : null}
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }

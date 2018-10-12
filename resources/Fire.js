@@ -16,6 +16,7 @@ class Fire {
     'users',
     'usernames',
     'events',
+    'eventChats',
     'friends'
   );
 

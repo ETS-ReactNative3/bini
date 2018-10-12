@@ -8,15 +8,17 @@ import {createStackNavigator} from 'react-navigation';
 import Initializer from './views/Initializer/Initializer.react';
 import Auth from './views/Auth/Auth.react';
 import Home from './views/Home/Home.react';
-import EventDetails from './views/Events/EventDetails.react';
-import InviteFriends from './views/Events/InviteFriends.react';
+import EventDetails from './views/CreateEvent/EventDetails.react';
+import InviteFriends from './views/CreateEvent/InviteFriends.react';
+import Event from './views/Event/Event.react';
 
 const RootStack = createStackNavigator({
   Initializer,
   Auth,
   Home,
   EventDetails,
-  InviteFriends
+  InviteFriends,
+  Event
 }, {
   initialRouteName: 'Initializer'
 });

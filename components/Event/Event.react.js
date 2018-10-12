@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Text,
-  Card
+  Text
 } from 'react-native-elements';
 
+import {Card} from 'components/Card/Card.react';
 import vars from 'styles/vars';
 
 export default class Event extends React.Component {
