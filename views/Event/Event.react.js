@@ -73,7 +73,7 @@ export default class Event extends React.Component {
           key={i}
         />
       );
-    }, '');
+    });
   }
 
   render() {
