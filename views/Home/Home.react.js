@@ -10,12 +10,15 @@ import {
   Icon
 } from 'react-native-elements';
 
+import {dispatch} from 'lib/bosque';
+import makeNavigationHeader from 'lib/makeNavigationHeader';
+import fire from 'resources/Fire';
+import {eventsListActions} from 'stores/EventsList/EventsList.actions';
+import {eventsListStore} from 'stores/EventsList/EventsList.store';
+
 import Logo from 'components/Logo/Logo.react';
 import Event from 'components/Event/Event.react';
 import vars from 'styles/vars';
-
-import makeNavigationHeader from 'lib/makeNavigationHeader';
-import fire from 'resources/Fire';
 
 export default class Home extends React.Component {
 
@@ -27,18 +30,27 @@ export default class Home extends React.Component {
     onRightPress: () => console.log('onRightPress')
   }));
 
-  state = {
-    events: []
+  constructor() {
+    super();
+    eventsListStore.subscribe(this);
   }
 
   async componentDidMount() {
+    /**
+     * @todo: This is multiple reads (one per document), create a collection
+     * of events for each user, where each document has all the event data for one user
+     */
     fire.db.collection(fire.collections.events).onSnapshot((eventsSnapshot) => {
       const events = [];
       eventsSnapshot.forEach((doc) => {
         events.push(doc.data());
       });
-      this.setState({events});
+      dispatch(eventsListActions.SET_EVENTS_LIST, events);
     });
+  }
+
+  componentWillUnmount() {
+    eventsListStore.unsubscribe(this);
   }
 
   createEvent = () => {
@@ -46,7 +58,7 @@ export default class Home extends React.Component {
   };
 
   renderEvents() {
-    if (this.state.events.length === 0) {
+    if (eventsListStore.eventsList.isEmpty()) {
       return (
         <Text style={{
           color: vars.colors.textMeta,
@@ -60,7 +72,7 @@ export default class Home extends React.Component {
       );
     }
 
-    return this.state.events.map((event) => (
+    return eventsListStore.eventsList.map((event) => (
       <TouchableOpacity
         key={event.id}
         activeOpacity={0.5}

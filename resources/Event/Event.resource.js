@@ -7,18 +7,18 @@ export const inviteStatuses = {
   accepted: 'accepted'
 };
 
-export class Event extends Record({
+export class EventResource extends Record({
+  createdAt: null,
+  description: '',
+  endDate: null, // @todo: implement
+  endTime: null, // @todo: implement
+  id: null,
+  invitees: {}, // userId: inviteStatus
+  location: '',
   name: '',
   startDate: null,
   startTime: null,
-  endDate: null, // @todo: implement
-  endTime: null, // @todo: implement
-  location: '',
-  description: '',
-  createdAt: null,
   updatedAt: null,
-  id: null,
-  invitees: {} // userId: inviteStatus
 }) {
 
   static inviteStatuses = inviteStatuses;
