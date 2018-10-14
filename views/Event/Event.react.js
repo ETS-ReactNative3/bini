@@ -5,6 +5,7 @@ import {
   KeyboardAvoidingView,
   StyleSheet
 } from 'react-native';
+import {List} from 'immutable';
 import firebase from 'firebase';
 import {GiftedChat} from 'react-native-gifted-chat';
 
@@ -42,7 +43,7 @@ export default class Event extends React.Component {
 
   getMessagesAsGifted() {
     const eventResource = eventsListStore.events.get(this.event.id);
-    const messages = eventResource.messages;
+    const messages = List(eventResource.messages).reverse().toJS();
     return messages.map((message, i) => {
       const author = eventResource.invitees[message.userId];
       return {
