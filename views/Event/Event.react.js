@@ -7,6 +7,7 @@ import {
   ScrollView
 } from 'react-native';
 import firebase from 'firebase';
+import {GiftedChat} from 'react-native-gifted-chat';
 
 import fire from 'resources/Fire';
 import {userStore} from 'stores/User/User.store';
@@ -33,6 +34,24 @@ export default class Event extends React.Component {
 
   get event() {
     return this.props.navigation.state.params.event;
+  }
+
+  getMessagesAsGifted() {
+    const eventResource = eventsListStore.events.get(this.event.id);
+    const messages = eventResource.messages;
+    return messages.map((message, i) => {
+      const author = eventResource.invitees[message.userId];
+      return {
+        _id: i,
+        text: message.body,
+        createdAt: message.timestamp.toDate(),
+        user: {
+          _id: message.userId,
+          name: author.displayName || `@${author.username}`,
+          avatar: author.avatar
+        }
+      };
+    });
   }
 
   renderMessages() {
@@ -84,6 +103,16 @@ export default class Event extends React.Component {
 
   render() {
     return (
+      <GiftedChat
+        messages={this.getMessagesAsGifted()}
+        onSend={(x) => {console.log(x)}}
+        user={{
+          _id: userStore.getUserId()
+        }}
+      />
+    );
+
+    return (
       <KeyboardAvoidingView
         style={styles.container}
         behavior='padding'
@@ -119,7 +148,6 @@ class Message extends React.Component {
       isCurrentUser,
       username
     } = this.props;
-    console.log(this.props);
     return (
       <View style={{
         marginBottom: 10

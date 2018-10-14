@@ -10,8 +10,8 @@ import {
 } from 'components/Form/Form.react';
 import makeNavigationHeader from 'lib/makeNavigationHeader';
 import {EventResource} from 'resources/Event/Event.resource';
-
 import {dispatch} from 'lib/bosque';
+
 import {createEventActions} from './CreateEvent.actions';
 
 export default class EventDetails extends React.Component {
