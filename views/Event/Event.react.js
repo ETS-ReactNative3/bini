@@ -49,7 +49,7 @@ export default class Event extends React.Component {
             isCreator={eventResource.creator === message.userId}
             isCurrentUser={userStore.getUserId() === message.userId}
             displayName={author.displayName}
-            username={author.userName}
+            username={author.username}
             body={message.body}
             key={i}
           />
@@ -117,7 +117,9 @@ class Message extends React.Component {
     } = this.props;
     console.log(this.props);
     return (
-      <View>
+      <View style={{
+        marginBottom: 10
+      }}>
         <Text>
           {displayName ? displayName : `@${username}`}
         </Text>
