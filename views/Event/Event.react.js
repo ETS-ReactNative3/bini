@@ -2,6 +2,7 @@ import React from 'react';
 import {
   View,
   Text,
+  KeyboardAvoidingView,
   StyleSheet,
   ScrollView
 } from 'react-native';
@@ -83,7 +84,10 @@ export default class Event extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior='padding'
+      >
         <ScrollView style={styles.messagesWrapper}>
           {this.renderMessages()}
         </ScrollView>
@@ -101,7 +105,7 @@ export default class Event extends React.Component {
             onPress={this.sendMessage}
           />
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
