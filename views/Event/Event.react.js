@@ -5,17 +5,15 @@ import {
   StyleSheet,
   ScrollView
 } from 'react-native';
+import firebase from 'firebase';
 
 import fire from 'resources/Fire';
-import {
-  dispatch,
-  getStore
-} from 'lib/bosque';
-import {EventStore} from './Event.store';
-import {eventActions} from './Event.actions';
+import {userStore} from 'stores/User/User.store';
+import {eventsListStore} from 'stores/EventsList/EventsList.store';
 
 import {
-  Input
+  Input,
+  Button
 } from 'components/Form/Form.react';
 
 import makeNavigationHeader from 'lib/makeNavigationHeader';
@@ -28,51 +26,58 @@ export default class Event extends React.Component {
     onLeftPress: () => navigation.goBack()
   }));
 
-  constructor(props) {
-    super(props);
-    this.storeName = `EventStore/${this.event.id}`;
-    this.store = getStore(this.storeName) || new EventStore(this.storeName);
-    this.store.subscribe(this);
-  }
-
-  async componentDidMount() {
-    fire.db.collection(fire.collections.eventChats)
-      .doc(this.event.id)
-      .onSnapshot((chat) => {
-        dispatch(eventActions.SET_CHAT, chat.data(), this.storeName);
-      });
-  }
-
-  componentWillUnmount() {
-    this.store.unsubscribe(this);
-  }
+  state = {
+    messageBody: ''
+  };
 
   get event() {
     return this.props.navigation.state.params.event;
   }
 
   renderMessages() {
-    if (!this.store.isReady) {
-      return (
-        <Text>
-          Loading...
-        </Text>
-      );
-    }
-    if (this.store.isEmpty) {
-      return (
+    const eventResource = eventsListStore.events.get(this.event.id);
+    const messages = eventResource.messages;
+    return messages.length === 0
+      ? (
         <Text>
           No chats found :-(
         </Text>
-      );
+      ) : messages.map((message, i) => {
+        const author = eventResource.invitees[message.userId];
+        return (
+          <Message
+            isCreator={eventResource.creator === message.userId}
+            isCurrentUser={userStore.getUserId() === message.userId}
+            displayName={author.displayName}
+            username={author.username}
+            body={message.body}
+            key={i}
+          />
+        );
+      });
+  }
+
+  updateMessage = (messageBody) => {
+    this.setState({messageBody});
+  }
+
+  sendMessage = async () => {
+    const messageBody = this.state.messageBody;
+    if (!messageBody) {
+      return;
     }
-    return this.store.chat.messages.map((message, i) => {
-      return (
-        <Message
-          message={message}
-          key={i}
-        />
-      );
+    const message = {
+      body: messageBody,
+      userId: userStore.getUserId(),
+      timestamp: firebase.firestore.Timestamp.fromDate(new Date())
+    };
+    await fire.db.collection(fire.collections.events)
+      .doc(this.event.id)
+      .update({
+        messages: firebase.firestore.FieldValue.arrayUnion(message)
+      });
+    this.setState({
+      messageBody: ''
     });
   }
 
@@ -80,12 +85,21 @@ export default class Event extends React.Component {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.messagesWrapper}>
-          <Text>
-            {this.renderMessages()}
-          </Text>
+          {this.renderMessages()}
         </ScrollView>
         <View style={styles.inputWrapper}>
-          <Input />
+          <Input
+            containerStyle={{
+              flexGrow: 1,
+              width: 'auto'
+            }}
+            value={this.state.messageBody}
+            onChangeText={this.updateMessage}
+          />
+          <Button
+            title='Send'
+            onPress={this.sendMessage}
+          />
         </View>
       </View>
     );
@@ -94,19 +108,23 @@ export default class Event extends React.Component {
 
 class Message extends React.Component {
   render() {
-    console.log(this.props);
     const {
+      body,
       displayName,
-      username,
-      content
-    } = this.props.message;
+      isCreator,
+      isCurrentUser,
+      username
+    } = this.props;
+    console.log(this.props);
     return (
-      <View>
+      <View style={{
+        marginBottom: 10
+      }}>
         <Text>
           {displayName ? displayName : `@${username}`}
         </Text>
         <Text>
-          {content}
+          {body}
         </Text>
       </View>
     );
@@ -125,6 +143,8 @@ const styles = StyleSheet.create({
 
   },
   inputWrapper: {
-    backgroundColor: 'white'
+    alignItems: 'center',
+    backgroundColor: 'white',
+    flexDirection: 'row'
   }
 });

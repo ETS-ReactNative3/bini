@@ -7,14 +7,20 @@ class UserStore extends Store {
   constructor(name) {
     super(name);
     this.setInitialData({
-      user: null
+      firebaseUser: null,
+      userData: null
     });
-    this.addListener(userActions.SET_USER, this.makeSetter('user'));
+    this.addListener(userActions.SET_USER, this._handleUserAuth);
+  }
+
+  _handleUserAuth([firebaseUser, userData]) {
+    this.set('firebaseUser', firebaseUser);
+    this.set('userData', userData);
   }
 
   getUserId() {
-    return this.user
-      ? this.user.uid
+    return this.firebaseUser
+      ? this.firebaseUser.uid
       : null;
   }
 }

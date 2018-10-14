@@ -12,6 +12,7 @@ import {
 import {upperFirst} from 'lodash';
 import validator from 'validator';
 import firebase from 'firebase';
+
 import fire from 'resources/Fire';
 import vars from 'styles/vars';
 

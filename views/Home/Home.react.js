@@ -12,7 +12,6 @@ import {
 
 import {dispatch} from 'lib/bosque';
 import makeNavigationHeader from 'lib/makeNavigationHeader';
-import fire from 'resources/Fire';
 import {eventsListActions} from 'stores/EventsList/EventsList.actions';
 import {eventsListStore} from 'stores/EventsList/EventsList.store';
 
@@ -35,18 +34,8 @@ export default class Home extends React.Component {
     eventsListStore.subscribe(this);
   }
 
-  async componentDidMount() {
-    /**
-     * @todo: This is multiple reads (one per document), create a collection
-     * of events for each user, where each document has all the event data for one user
-     */
-    fire.db.collection(fire.collections.events).onSnapshot((eventsSnapshot) => {
-      const events = [];
-      eventsSnapshot.forEach((doc) => {
-        events.push(doc.data());
-      });
-      dispatch(eventsListActions.SET_EVENTS_LIST, events);
-    });
+  componentDidMount() {
+    dispatch(eventsListActions.INIT_EVENTS_LIST);
   }
 
   componentWillUnmount() {
@@ -58,7 +47,7 @@ export default class Home extends React.Component {
   };
 
   renderEvents() {
-    if (eventsListStore.eventsList.isEmpty()) {
+    if (eventsListStore.eventsAsList.isEmpty()) {
       return (
         <Text style={{
           color: vars.colors.textMeta,
@@ -72,7 +61,7 @@ export default class Home extends React.Component {
       );
     }
 
-    return eventsListStore.eventsList.map((event) => (
+    return eventsListStore.eventsAsList.toJS().map((event) => (
       <TouchableOpacity
         key={event.id}
         activeOpacity={0.5}
