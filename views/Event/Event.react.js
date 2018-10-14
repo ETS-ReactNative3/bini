@@ -3,19 +3,15 @@ import {
   View,
   Text,
   KeyboardAvoidingView,
-  StyleSheet,
-  ScrollView
+  StyleSheet
 } from 'react-native';
+import {List} from 'immutable';
 import firebase from 'firebase';
+import {GiftedChat} from 'react-native-gifted-chat';
 
 import fire from 'resources/Fire';
 import {userStore} from 'stores/User/User.store';
 import {eventsListStore} from 'stores/EventsList/EventsList.store';
-
-import {
-  Input,
-  Button
-} from 'components/Form/Form.react';
 
 import makeNavigationHeader from 'lib/makeNavigationHeader';
 
@@ -27,12 +23,40 @@ export default class Event extends React.Component {
     onLeftPress: () => navigation.goBack()
   }));
 
+  
+  constructor() {
+    super();
+    eventsListStore.subscribe(this);
+  }
+  
   state = {
     messageBody: ''
   };
 
+  componentWillUnmount() {
+    eventsListStore.unsubscribe(this);
+  }
+
   get event() {
     return this.props.navigation.state.params.event;
+  }
+
+  getMessagesAsGifted() {
+    const eventResource = eventsListStore.events.get(this.event.id);
+    const messages = List(eventResource.messages).reverse().toJS();
+    return messages.map((message, i) => {
+      const author = eventResource.invitees[message.userId];
+      return {
+        _id: i,
+        text: message.body,
+        createdAt: message.timestamp.toDate(),
+        user: {
+          _id: message.userId,
+          name: author.displayName || `@${author.username}`,
+          avatar: author.avatar
+        }
+      };
+    });
   }
 
   renderMessages() {
@@ -62,14 +86,10 @@ export default class Event extends React.Component {
     this.setState({messageBody});
   }
 
-  sendMessage = async () => {
-    const messageBody = this.state.messageBody;
-    if (!messageBody) {
-      return;
-    }
+  sendMessage = async ([newMessage]) => {
     const message = {
-      body: messageBody,
-      userId: userStore.getUserId(),
+      body: newMessage.text,
+      userId: newMessage.user._id,
       timestamp: firebase.firestore.Timestamp.fromDate(new Date())
     };
     await fire.db.collection(fire.collections.events)
@@ -77,35 +97,17 @@ export default class Event extends React.Component {
       .update({
         messages: firebase.firestore.FieldValue.arrayUnion(message)
       });
-    this.setState({
-      messageBody: ''
-    });
   }
 
   render() {
     return (
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior='padding'
-      >
-        <ScrollView style={styles.messagesWrapper}>
-          {this.renderMessages()}
-        </ScrollView>
-        <View style={styles.inputWrapper}>
-          <Input
-            containerStyle={{
-              flexGrow: 1,
-              width: 'auto'
-            }}
-            value={this.state.messageBody}
-            onChangeText={this.updateMessage}
-          />
-          <Button
-            title='Send'
-            onPress={this.sendMessage}
-          />
-        </View>
-      </KeyboardAvoidingView>
+      <GiftedChat
+        messages={this.getMessagesAsGifted()}
+        onSend={this.sendMessage}
+        user={{
+          _id: userStore.getUserId()
+        }}
+      />
     );
   }
 }
@@ -119,7 +121,6 @@ class Message extends React.Component {
       isCurrentUser,
       username
     } = this.props;
-    console.log(this.props);
     return (
       <View style={{
         marginBottom: 10
