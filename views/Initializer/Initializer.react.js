@@ -23,9 +23,12 @@ export default class Initializer extends React.Component {
     await Font.loadAsync({
       'pacifico': require('../../assets/fonts/Pacifico-Regular.ttf')
     });
-    fire.auth().onAuthStateChanged((user) => {
+    fire.auth().onAuthStateChanged(async (user) => {
       if (user) {
-        dispatch(userActions.SET_USER, user);
+        const userData = await fire.db.collection(fire.collections.users)
+          .doc(user.uid)
+          .get();
+        dispatch(userActions.SET_USER, [user, userData.data()]);
         this.props.navigation.replace('Home');
       } else {
         this.props.navigation.replace('Auth');

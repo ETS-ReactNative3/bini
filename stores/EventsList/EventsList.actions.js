@@ -1,5 +1,5 @@
 import {makeActions} from 'lib/bosque';
 
 export const eventsListActions = makeActions(
-  'SET_EVENTS_LIST'
+  'INIT_EVENTS_LIST'
 );

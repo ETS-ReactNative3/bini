@@ -11,16 +11,16 @@ import {
   Icon
 } from 'react-native-elements';
 
+import {dispatch} from 'lib/bosque';
+import makeNavigationHeader from 'lib/makeNavigationHeader';
+import {EventResource} from 'resources/Event/Event.resource';
+
 import {Button} from 'components/Form/Form.react';
 import {ScrollView} from 'components/ViewComponents/ScrollView.react';
 
-import makeNavigationHeader from 'lib/makeNavigationHeader';
-
-import {dispatch} from 'lib/bosque';
 import {createEventActions} from './CreateEvent.actions';
 import {createEventStore} from './CreateEvent.store';
 import {userStore} from 'stores/User/User.store';
-import {EventResource} from 'resources/Event/Event.resource';
 import fire from 'resources/Fire';
 import vars from 'styles/vars';
 
@@ -37,21 +37,21 @@ export default class InviteFriends extends React.Component {
   }));
 
   state = {
-    friends: [],
+    friends: {},
     invitees: Set(),
     isReady: false
   }
 
   async componentDidMount() {
-    fire.db.collection(fire.collections.friends)
+    fire.db.collection(fire.collections.users)
       .doc(userStore.getUserId())
       .get()
-      .then((friendsSnapshot) => {
-        const friends = Object.entries(friendsSnapshot.data())
-          .map(([id, data]) => {
-            data.id = id;
-            return data;
-          });
+      .then((userSnapshot) => {
+        const friends = Object.entries(userSnapshot.data().friends).reduce((acc, [id, friend]) => {
+          acc[id] = friend;
+          acc[id].id = id;
+          return acc;
+        }, {});
         this.setState({
           friends,
           isReady: true
@@ -70,7 +70,7 @@ export default class InviteFriends extends React.Component {
     /**
      * @todo: No friends view
      */
-    return this.state.friends.map((friend, i) => (
+    return Object.values(this.state.friends).map((friend, i) => (
       <Friend
         friend={friend}
         toggleFriend={this.toggleFriend}
@@ -81,12 +81,28 @@ export default class InviteFriends extends React.Component {
   }
 
   createEvent = async () => {
-
-    const friendsObj = this.state.invitees.reduce((acc, friendId) => {
-      acc[friendId] = EventResource.inviteStatuses.pending;
+    const initialInvitees = {
+      [userStore.getUserId()]: {
+        displayName: userStore.userData.displayName,
+        username: userStore.userData.username,
+        status: EventResource.inviteStatuses.accepted
+      }
+    };
+    const invitees = this.state.invitees.reduce((acc, inviteeId) => {
+      const {
+        displayName,
+        username,
+        status = EventResource.inviteStatuses.pending
+      } = this.state.friends[inviteeId];
+      const invitee = {displayName, username, status};
+      acc[inviteeId] = invitee;
       return acc;
-    }, {});
-    dispatch(createEventActions.SET_EVENT, createEventStore.event.set('invitees', friendsObj));
+    }, initialInvitees);
+
+    dispatch(
+      createEventActions.SET_EVENT,
+      createEventStore.event.set('invitees', invitees)
+        .set('creator', userStore.getUserId()));
     await createEventStore.event.save();
     dispatch(createEventActions.RESET);
     this.props.navigation.replace('Home');

@@ -9,12 +9,14 @@ export const inviteStatuses = {
 
 export class EventResource extends Record({
   createdAt: null,
+  creator: null,
   description: '',
   endDate: null, // @todo: implement
   endTime: null, // @todo: implement
   id: null,
-  invitees: {}, // userId: inviteStatus
+  invitees: {}, // userId: {displayName, username, status}
   location: '',
+  messages: [],
   name: '',
   startDate: null,
   startTime: null,

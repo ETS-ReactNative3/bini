@@ -44,16 +44,29 @@ export class Form extends React.Component {
 }
 
 class NormalizedInput extends React.Component {
+
+  static defaultProps = {
+    containerStyle: {},
+    errorStyle: {}
+  }
+
   render() {
+    const {
+      containerStyle,
+      errorStyle,
+      ...passthroughProps
+    } = this.props;
+
     return (
       <RNEInput
         labelStyle={{color: vars.colors.main}}
-        containerStyle={styles.container}
-        errorStyle={{
+        containerStyle={[styles.container, containerStyle]}
+        errorStyle={[{
           color: vars.colors.error,
-          fontWeight: 'bold'
-        }}
-        {...this.props}
+          fontWeight: 'bold',
+          ...errorStyle
+        }, errorStyle]}
+        {...passthroughProps}
       />
     );
   }

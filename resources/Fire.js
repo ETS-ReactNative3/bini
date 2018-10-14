@@ -16,8 +16,7 @@ class Fire {
     'users',
     'usernames',
     'events',
-    'eventChats',
-    'friends'
+    'eventChats'
   );
 
   getServerTimestamp = () => firebase.firestore.FieldValue.serverTimestamp();
