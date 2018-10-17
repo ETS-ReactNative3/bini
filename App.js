@@ -1,9 +1,16 @@
 import React from 'react';
 import {
   StatusBar,
-  View
+  View,
+  StyleSheet
 } from 'react-native';
-import {createStackNavigator} from 'react-navigation';
+import {
+  createStackNavigator
+} from 'react-navigation';
+
+import {dispatch} from 'lib/bosque';
+import {Drawer} from 'components/Drawer/Drawer.react';
+import {drawerActions} from 'components/Drawer/Drawer.actions';
 
 import Initializer from './views/Initializer/Initializer.react';
 import Auth from './views/Auth/Auth.react';
@@ -23,19 +30,34 @@ const RootStack = createStackNavigator({
   initialRouteName: 'Initializer'
 });
 
+export const mainDrawerStoreName = 'mainNavigationMenu';
+
 export default class App extends React.Component {
   render() {
     return (
-      <View style={{
-        flex: 1,
-        height: '100%'
-      }}>
+      <View style={styles.main}>
         <StatusBar  
           barStyle='light-content'
           backgroundColor='#ecf0f1'
         />
         <RootStack />
+        <Drawer storeName={mainDrawerStoreName} />
       </View>
     );
   }
+}
+
+const styles = StyleSheet.create({
+  main: {
+    flex: 1,
+    height: '100%'
+  }
+});
+
+export function toggleMainDrawer() {
+  dispatch(drawerActions.TOGGLE_DRAWER, null, mainDrawerStoreName);
+}
+
+export function closeMainDrawer() {
+  dispatch(drawerActions.CLOSE_DRAWER, null, mainDrawerStoreName);
 }

@@ -14,6 +14,7 @@ import {dispatch} from 'lib/bosque';
 import makeNavigationHeader from 'lib/makeNavigationHeader';
 import {eventsListActions} from 'stores/EventsList/EventsList.actions';
 import {eventsListStore} from 'stores/EventsList/EventsList.store';
+import {toggleMainDrawer} from 'App';
 
 import Logo from 'components/Logo/Logo.react';
 import Event from 'components/Event/Event.react';
@@ -25,7 +26,7 @@ export default class Home extends React.Component {
     headerTitle: <Logo fontSize={20} />,
     leftIcon: 'menu',
     rightIcon: 'person',
-    onLeftPress: () => console.log('onLeftPress'),
+    onLeftPress: toggleMainDrawer,
     onRightPress: () => console.log('onRightPress')
   }));
 
