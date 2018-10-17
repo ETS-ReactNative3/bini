@@ -8,16 +8,13 @@ import {
   createStackNavigator
 } from 'react-navigation';
 
-import {dispatch} from 'lib/bosque';
-import {Drawer} from 'components/Drawer/Drawer.react';
-import {drawerActions} from 'components/Drawer/Drawer.actions';
-
 import Initializer from './views/Initializer/Initializer.react';
 import Auth from './views/Auth/Auth.react';
 import Home from './views/Home/Home.react';
 import EventDetails from './views/CreateEvent/EventDetails.react';
 import InviteFriends from './views/CreateEvent/InviteFriends.react';
 import Event from './views/Event/Event.react';
+import Account from './views/Account/Account.react';
 
 const RootStack = createStackNavigator({
   Initializer,
@@ -25,7 +22,8 @@ const RootStack = createStackNavigator({
   Home,
   EventDetails,
   InviteFriends,
-  Event
+  Event,
+  Account
 }, {
   initialRouteName: 'Initializer'
 });
@@ -41,7 +39,6 @@ export default class App extends React.Component {
           backgroundColor='#ecf0f1'
         />
         <RootStack />
-        <Drawer storeName={mainDrawerStoreName} />
       </View>
     );
   }
@@ -53,11 +50,3 @@ const styles = StyleSheet.create({
     height: '100%'
   }
 });
-
-export function toggleMainDrawer() {
-  dispatch(drawerActions.TOGGLE_DRAWER, null, mainDrawerStoreName);
-}
-
-export function closeMainDrawer() {
-  dispatch(drawerActions.CLOSE_DRAWER, null, mainDrawerStoreName);
-}

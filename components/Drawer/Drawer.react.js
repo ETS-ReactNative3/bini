@@ -7,16 +7,17 @@ import {
   TouchableWithoutFeedback,
   Animated
 } from 'react-native';
+import {ListItem} from 'react-native-elements';
 
-import {getStore} from 'lib/bosque';
-import vars from 'styles/vars';
 import {
-  closeMainDrawer
-} from 'App';
+  getStore,
+  dispatch
+} from 'lib/bosque';
 
+import {drawerActions} from './Drawer.actions';
 import {DrawerStore} from './Drawer.store';
 
-const drawerWidth = 180;
+const drawerWidth = 200;
 const animationDuration = 200;
 
 export class Drawer extends React.Component {
@@ -29,12 +30,20 @@ export class Drawer extends React.Component {
 
   state = {
     shadeOpacity: new Animated.Value(0),
-    drawerTranslate: new Animated.Value(drawerWidth * -1)
+    drawerTranslate: new Animated.Value(drawerWidth * -1),
+    shouldRender: false
   };
 
   componentDidUpdate() {
-    if (this.store.isOpen) {
-      this.animateIn();
+    if (this.store.isOpen && !this.state.shouldRender) {
+      this.setState({
+        shouldRender: true
+      }, this.animateIn);
+      return;
+    }
+    if (!this.store.isOpen && this.state.shouldRender) {
+      this.animateOut();
+      return;
     }
   }
 
@@ -57,7 +66,7 @@ export class Drawer extends React.Component {
     ).start();
   };
 
-  animateOut = () => {
+  animateOut = (onFinish = () => {}) => {
     Animated.timing(
       this.state.drawerTranslate, {
         toValue: drawerWidth * -1,
@@ -71,20 +80,41 @@ export class Drawer extends React.Component {
       }
     ).start(({finished}) => {
       if (finished) {
-        closeMainDrawer();
+        this.setState({
+          shouldRender: false
+        }, () => {
+          onFinish();
+        });
       }
     });
   };
 
+  handleShadePress = () => {
+    dispatch(drawerActions.CLOSE_DRAWER, null, this.props.storeName);
+  };
+
+  makeRouteLinks() {
+    return this.props.routeLinks.map((link, i) => (
+      <ListItem
+        key={i}
+        title={link.label}
+        onPress={() => {
+          this.animateOut(() => this.props.navigation.replace(link.to));
+        }}
+      />
+    ));
+  }
+
   render() {
-    console.log(this.store.isOpen);
-    if (!this.store.isOpen) {
+    if (!this.state.shouldRender) {
       return null;
     }
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.outerWrapper}>
-          <TouchableWithoutFeedback onPress={this.animateOut}>
+          <TouchableWithoutFeedback
+            onPress={this.handleShadePress}
+          >
             <Animated.View
               style={[
                 styles.dismissView,
@@ -104,13 +134,7 @@ export class Drawer extends React.Component {
               }
             ]}
           >
-            <Text>
-              Hello
-              Hello
-              Hello
-              Hello
-              Hello
-            </Text>
+            {this.makeRouteLinks()}
           </Animated.View>
         </View>
       </SafeAreaView>

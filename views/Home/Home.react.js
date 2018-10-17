@@ -14,19 +14,23 @@ import {dispatch} from 'lib/bosque';
 import makeNavigationHeader from 'lib/makeNavigationHeader';
 import {eventsListActions} from 'stores/EventsList/EventsList.actions';
 import {eventsListStore} from 'stores/EventsList/EventsList.store';
-import {toggleMainDrawer} from 'App';
+
+import {
+  toggleDrawer,
+  withNavigationDrawer
+} from '../../hocs/withNavigationDrawer';
 
 import Logo from 'components/Logo/Logo.react';
 import Event from 'components/Event/Event.react';
 import vars from 'styles/vars';
 
-export default class Home extends React.Component {
+class Home extends React.Component {
 
   static navigationOptions = makeNavigationHeader(({navigation}) => ({
     headerTitle: <Logo fontSize={20} />,
     leftIcon: 'menu',
     rightIcon: 'person',
-    onLeftPress: toggleMainDrawer,
+    onLeftPress: toggleDrawer,
     onRightPress: () => console.log('onRightPress')
   }));
 
@@ -176,3 +180,5 @@ class BottomButtonRow extends React.Component {
     );
   }
 }
+
+export default withNavigationDrawer(Home);
