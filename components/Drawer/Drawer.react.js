@@ -89,7 +89,7 @@ export class Drawer extends React.Component {
     });
   };
 
-  handleShadePress = () => {
+  closeDrawer = () => {
     dispatch(drawerActions.CLOSE_DRAWER, null, this.props.storeName);
   };
 
@@ -99,7 +99,10 @@ export class Drawer extends React.Component {
         key={i}
         title={link.label}
         onPress={() => {
-          this.animateOut(() => this.props.navigation.replace(link.to));
+          this.animateOut(() => {
+            this.props.navigation.replace(link.to);
+            this.closeDrawer();
+          });
         }}
       />
     ));
@@ -113,7 +116,7 @@ export class Drawer extends React.Component {
       <SafeAreaView style={styles.container}>
         <View style={styles.outerWrapper}>
           <TouchableWithoutFeedback
-            onPress={this.handleShadePress}
+            onPress={this.closeDrawer}
           >
             <Animated.View
               style={[
