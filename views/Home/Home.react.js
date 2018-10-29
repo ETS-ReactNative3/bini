@@ -15,6 +15,7 @@ import makeNavigationHeader from 'lib/makeNavigationHeader';
 import {eventsListActions} from 'stores/EventsList/EventsList.actions';
 import {eventsListStore} from 'stores/EventsList/EventsList.store';
 
+import {LightStatusBar} from 'components/LightStatusBar/LightStatusBar.react';
 import Logo from 'components/Logo/Logo.react';
 import Event from 'components/Event/Event.react';
 import vars from 'styles/vars';
@@ -24,9 +25,9 @@ export default class Home extends React.Component {
   static navigationOptions = makeNavigationHeader(({navigation}) => ({
     headerTitle: <Logo fontSize={20} />,
     leftIcon: 'menu',
-    rightIcon: 'person',
-    onLeftPress: () => console.log('onLeftPress'),
-    onRightPress: () => console.log('onRightPress')
+    //rightIcon: 'person',
+    onLeftPress: navigation.openDrawer,
+    //onRightPress: () => console.log('onRightPress')
   }));
 
   constructor() {
@@ -35,7 +36,9 @@ export default class Home extends React.Component {
   }
 
   componentDidMount() {
-    dispatch(eventsListActions.INIT_EVENTS_LIST);
+    if (!eventsListStore.hasInit) {
+      dispatch(eventsListActions.INIT_EVENTS_LIST);
+    }
   }
 
   componentWillUnmount() {
@@ -85,6 +88,7 @@ export default class Home extends React.Component {
         flex: 1,
         justifyContent: 'flex-start'
       }}>
+        <LightStatusBar />
         <ScrollView style={{flex: 1}}>
           {this.renderEvents()}
         </ScrollView>

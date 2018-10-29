@@ -15,7 +15,7 @@ export default class Logo extends React.Component {
   };
 
   static defaultProps = {
-    fontSize: 60,
+    fontSize: 40,
     viewStyles: {},
     textStyles: {}
   };

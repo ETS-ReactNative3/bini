@@ -248,7 +248,6 @@ const styles = StyleSheet.create({
     borderColor: RNEColors.grey3,
     borderWidth: 0,
     borderBottomWidth: 1,
-    // borderBottomColor: vars.colors.main,
     paddingLeft: 10,
     paddingRight: 10,
     width: '100%'

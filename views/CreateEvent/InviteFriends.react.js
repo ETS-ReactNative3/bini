@@ -39,7 +39,8 @@ export default class InviteFriends extends React.Component {
   state = {
     friends: {},
     invitees: Set(),
-    isReady: false
+    isReady: false,
+    isSavePending: false
   }
 
   async componentDidMount() {
@@ -81,6 +82,7 @@ export default class InviteFriends extends React.Component {
   }
 
   createEvent = async () => {
+    this.setState({isSavePending: true});
     const initialInvitees = {
       [userStore.getUserId()]: {
         displayName: userStore.userData.displayName,
@@ -104,6 +106,7 @@ export default class InviteFriends extends React.Component {
       createEventStore.event.set('invitees', invitees)
         .set('creator', userStore.getUserId()));
     await createEventStore.event.save();
+    this.setState({isSavePending: true});
     dispatch(createEventActions.RESET);
     this.props.navigation.replace('Home');
   };
@@ -116,6 +119,7 @@ export default class InviteFriends extends React.Component {
           pushToBottom
           title='Create Event'
           onPress={this.createEvent}
+          disabled={this.state.isSavePending}
         />
       </ScrollView>
     );
