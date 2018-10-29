@@ -14,7 +14,6 @@ class Fire {
 
   collections = makeConstants(
     'users',
-    'usernames',
     'events',
     'eventChats'
   );

@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  View,
-  Text
+  View
 } from 'react-native';
 import vars from 'styles/vars';
+import {LightStatusBar} from 'components/LightStatusBar/LightStatusBar.react';
 
 export default class BlankView extends React.Component {
 
@@ -23,7 +23,9 @@ export default class BlankView extends React.Component {
           backgroundColor: this.props.backgroundColor,
           flex: 1
         }}
-      />
+      >
+        <LightStatusBar />        
+      </View>
     );
   }
 }

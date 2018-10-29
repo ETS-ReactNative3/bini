@@ -41,15 +41,13 @@ export default class SignUp extends React.Component {
     }
   };
 
-  stripWhiteSpace
-
   render() {
     const {
       username,
+      displayName,
       email,
       password
     } = this.state;
-    console.log(this.state);
     return (
       <View
         enabled
@@ -63,6 +61,11 @@ export default class SignUp extends React.Component {
           property='username'
           value={username}
           onChangeText={(username) => this.setState({username: username.replace(/[^\w-]/g, '')})}
+        />
+        <SignInField
+          label='Display Name'
+          value={displayName}
+          onChangeText={(displayName) => this.setState({displayName: displayName.replace(/[^\w ]/g, '')})}
         />
         <SignInField
           property='email'
@@ -117,7 +120,7 @@ const SignInField = ({property, value, label, onChangeText, onFocus, onBlur}) =>
     onFocus={onFocus}
     onBlur={onBlur}
     underlineColorAndroid='#fff'
-    textContentType={property}
+    textContentType={['username', 'password'].includes(property) ? property : 'none'}
     inputStyle={{color: '#fff'}}
     containerStyle={{
       marginBottom: 15,

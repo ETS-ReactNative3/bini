@@ -6,23 +6,26 @@ import moment from 'moment';
 import {
   Store
 } from 'lib/bosque';
-import {eventsListActions} from './EventsList.actions';
+import { eventsListActions } from './EventsList.actions';
 
 import fire from 'resources/Fire';
-import {EventResource} from 'resources/Event/Event.resource';
+import { EventResource } from 'resources/Event/Event.resource';
 
 class EventsListStore extends Store {
   constructor(name) {
     super(name);
     this.setInitialData(Map({
-      events: OrderedMap()
+      events: OrderedMap(),
+      hasInit: false
     }));
     this.addListener(eventsListActions.INIT_EVENTS_LIST, this._initEventsList);
   }
 
-  eventStores = {};
-
   _initEventsList() {
+    if (this.hasInit) {
+      return;
+    }
+    this.set('hasInit', true);
     fire.db.collection(fire.collections.events)
       .onSnapshot((eventsSnapshot) => {
         const events = [];

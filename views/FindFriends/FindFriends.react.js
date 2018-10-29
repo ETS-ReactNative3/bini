@@ -1,12 +1,6 @@
 import React from 'react';
 import {
-  View,
-  StyleSheet
-} from 'react-native';
-import {
-  Form,
-  Input,
-  Button
+  Form
 } from 'components/Form/Form.react';
 import {
   Text
@@ -14,31 +8,23 @@ import {
 
 import {LightStatusBar} from 'components/LightStatusBar/LightStatusBar.react';
 import makeNavigationHeader from 'lib/makeNavigationHeader';
-import vars from 'styles/vars';
 
-export default class Account extends React.Component {
+export default class FindFriends extends React.Component {
 
   static navigationOptions = makeNavigationHeader(({navigation}) => ({
-    title: 'Account',
-    leftIcon: 'menu',
-    onLeftPress: navigation.openDrawer
+    title: 'Find Friends',
+    leftIcon: 'keyboard-arrow-left',
+    onLeftPress: () => navigation.goBack()
   }));
 
   render() {
     return (
       <Form>
         <LightStatusBar />
-        <Text style={styles.container}>
-          My account stuff will go here soon...
+        <Text>
+          FindFriends FindFriends FindFriends
         </Text>
       </Form>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: vars.sizers.viewPadding,
-    flex: 1
-  }
-});

@@ -5,7 +5,8 @@ import {
   StyleSheet
 } from 'react-native';
 import {
-  createStackNavigator
+  createStackNavigator,
+  createDrawerNavigator
 } from 'react-navigation';
 
 import Initializer from './views/Initializer/Initializer.react';
@@ -15,38 +16,37 @@ import EventDetails from './views/CreateEvent/EventDetails.react';
 import InviteFriends from './views/CreateEvent/InviteFriends.react';
 import Event from './views/Event/Event.react';
 import Account from './views/Account/Account.react';
+import Friends from './views/Friends/Friends.react';
+import FindFriends from './views/FindFriends/FindFriends.react';
 
-const RootStack = createStackNavigator({
+const EventStack = createStackNavigator({
   Initializer,
   Auth,
   Home,
   EventDetails,
   InviteFriends,
-  Event,
-  Account
+  Event
 }, {
   initialRouteName: 'Initializer'
 });
 
-export const mainDrawerStoreName = 'mainNavigationMenu';
+const AccountStack = createStackNavigator({
+  Account
+}, {
+  initialRouteName: 'Account'
+});
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.main}>
-        <StatusBar  
-          barStyle='light-content'
-          backgroundColor='#ecf0f1'
-        />
-        <RootStack />
-      </View>
-    );
-  }
-}
+const FriendsStack = createStackNavigator({
+  Friends,
+  FindFriends
+}, {
+  initialRouteName: 'Friends'
+});
 
-const styles = StyleSheet.create({
-  main: {
-    flex: 1,
-    height: '100%'
-  }
+export default createDrawerNavigator({
+  Events: EventStack,
+  Friends: FriendsStack,
+  Account: AccountStack
+}, {
+  initialRouteName: 'Events'
 });
