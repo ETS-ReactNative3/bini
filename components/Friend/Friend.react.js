@@ -6,10 +6,10 @@ import {
 } from 'react-native';
 import {
   Text,
-  Card,
   Icon
 } from 'react-native-elements';
 
+import {Card} from 'components/Card/Card.react';
 import vars from 'styles/vars';
 
 export class Friend extends React.Component {
