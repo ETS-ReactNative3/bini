@@ -25,10 +25,8 @@ export default class Initializer extends React.Component {
     });
     fire.auth().onAuthStateChanged(async (user) => {
       if (user) {
-        const userData = await fire.db.collection(fire.collections.users)
-          .doc(user.uid)
-          .get();
-        dispatch(userActions.SET_USER, [user, userData.data()]);
+        // Adds snapshot listener for managed user object
+        dispatch(userActions.SET_USER, user);
         this.props.navigation.replace('Home');
       } else {
         this.props.navigation.replace('Auth');

@@ -1,6 +1,7 @@
 import {
   Store
 } from 'lib/bosque';
+import fire from 'resources/Fire';
 import {userActions} from './User.actions';
 
 class UserStore extends Store {
@@ -13,9 +14,13 @@ class UserStore extends Store {
     this.addListener(userActions.SET_USER, this._handleUserAuth);
   }
 
-  _handleUserAuth([firebaseUser, userData]) {
+  _handleUserAuth(firebaseUser) {
     this.set('firebaseUser', firebaseUser);
-    this.set('userData', userData);
+    fire.db.collection(fire.collections.users)
+      .doc(firebaseUser.uid)
+      .onSnapshot((userSnapshot) => {
+        this.set('userData', userSnapshot.data());
+      });
   }
 
   getUserId() {

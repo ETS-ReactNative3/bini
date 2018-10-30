@@ -14,8 +14,7 @@ class Fire {
 
   collections = makeConstants(
     'users',
-    'events',
-    'eventChats'
+    'events'
   );
 
   getServerTimestamp = () => firebase.firestore.FieldValue.serverTimestamp();

@@ -17,6 +17,7 @@ import {EventResource} from 'resources/Event/Event.resource';
 
 import {Button} from 'components/Form/Form.react';
 import {ScrollView} from 'components/ViewComponents/ScrollView.react';
+import {Friend} from 'components/Friend/Friend.react';
 
 import {createEventActions} from './CreateEvent.actions';
 import {createEventStore} from './CreateEvent.store';
@@ -122,63 +123,6 @@ export default class InviteFriends extends React.Component {
           disabled={this.state.isSavePending}
         />
       </ScrollView>
-    );
-  }
-}
-
-/**
- * @todo: Component this out
- */
-class Friend extends React.Component {
-
-  static propTypes = {
-    friend: PropTypes.object,
-    toggleFriend: PropTypes.func
-  }
-
-  handlePress = () => {
-    this.props.toggleFriend(this.props.friend.id);
-  };
-
-  render() {
-    return (
-      <View>
-        <TouchableWithoutFeedback onPress={this.handlePress}>
-          <Card
-            containerStyle={{
-              margin: 0,
-              marginBottom: 15
-            }}
-            wrapperStyle={{
-              alignItems: 'center',
-              flexDirection: 'row',
-              justifyContent: 'space-between'
-            }}
-          >
-            <View style={{marginRight: 10}}>
-              <Text style={{
-                fontWeight: 'bold'
-              }}>
-                {this.props.friend.displayName}
-              </Text>
-              <Text style={{
-                fontStyle: 'italic',
-                color: vars.colors.textMeta,
-                fontSize: 12
-              }}>
-                @{this.props.friend.username}
-              </Text>
-            </View>
-            <View>
-              <Icon
-                type='font-awesome'
-                name={this.props.isInvited ? 'dot-circle-o' : 'circle-o'}
-                color={this.props.isInvited ? vars.colors.main : '#969696'}
-              />
-            </View>
-          </Card>
-        </TouchableWithoutFeedback>
-      </View>
     );
   }
 }
