@@ -4,7 +4,8 @@ import {
   View,
   Platform,
   StyleSheet,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  ScrollView as RNEScrollView
 } from 'react-native';
 import {
   Text,
@@ -16,9 +17,10 @@ import {
 import DatePicker from 'react-native-datepicker';
 import LoadingBlockingView from 'components/LoadingBlockingView/LoadingBlockingView.react';
 import {ScrollView} from 'components/ViewComponents/ScrollView.react';
+import {Card} from 'components/Card/Card.react';
 import vars from 'styles/vars';
 
-export class Form extends React.Component {
+class Form extends React.Component {
 
   static propTypes = {
     isReady: PropTypes.bool
@@ -34,9 +36,11 @@ export class Form extends React.Component {
         behavior='padding'
         style={{flex: 1}}
       >
-        <ScrollView>
-          {this.props.children}
-          {!this.props.isReady ? <LoadingBlockingView /> : null}
+        <ScrollView contentContainerStyle={{padding: 0}}>
+          <Card>
+            {this.props.children}
+            {!this.props.isReady ? <LoadingBlockingView /> : null}
+          </Card>
         </ScrollView>
       </KeyboardAvoidingView>
     );
@@ -59,7 +63,7 @@ class NormalizedInput extends React.Component {
 
     return (
       <RNEInput
-        labelStyle={{color: vars.colors.main}}
+        labelStyle={{color: vars.colors.text}}
         containerStyle={[styles.container, containerStyle]}
         errorStyle={[{
           color: vars.colors.error,
@@ -72,7 +76,7 @@ class NormalizedInput extends React.Component {
   }
 }
 
-export class Input extends React.Component {
+class Input extends React.Component {
   render() {
     return (
       <NormalizedInput {...this.props} />
@@ -80,7 +84,7 @@ export class Input extends React.Component {
   }
 }
 
-export class TextArea extends React.Component {
+class TextArea extends React.Component {
 
   static propTypes = {
     numberOfLines: PropTypes.number
@@ -126,6 +130,7 @@ class NormalizedDatePicker extends React.Component {
             dateText: styles.datePickerText,
             placeholderText: styles.datePickerText
           }}
+          showIcon={false}
           {...this.props}
         />
       </View>
@@ -133,7 +138,7 @@ class NormalizedDatePicker extends React.Component {
   }
 }
 
-export class DateInput extends React.Component {
+class DateInput extends React.Component {
 
   render() {
     return (
@@ -141,56 +146,49 @@ export class DateInput extends React.Component {
         format='YYYY-MM-DD'
         {...this.props}
         mode='date'
-        iconComponent={(
-          <Icon
-            type='font-awesome'
-            name='calendar-o'
-            color={vars.colors.main}
-          />
-        )}
       />
     );
   }
 }
 
-export class TimeInput extends React.Component {
+class TimeInput extends React.Component {
   render() {
     return (
       <NormalizedDatePicker
         {...this.props}
         mode='time'
         format='hh:mm A'
-        iconComponent={(
-          <Icon
-            type='font-awesome'
-            name='clock-o'
-            color={vars.colors.main}
-          />
-        )}
+        // iconComponent={(
+        //   <Icon
+        //     type='font-awesome'
+        //     name='clock-o'
+        //     color={vars.colors.main}
+        //   />
+        // )}
       />
     );
   }
 }
 
-export class DatetimeInput extends React.Component {
+class DatetimeInput extends React.Component {
   render() {
     return (
       <NormalizedDatePicker
         {...this.props}
         mode='datetime'
-        iconComponent={(
-          <Icon
-            type='font-awesome'
-            name='calendar-o'
-            color={vars.colors.main}
-          />
-        )}
+        // iconComponent={(
+        //   <Icon
+        //     type='font-awesome'
+        //     name='calendar-o'
+        //     color={vars.colors.main}
+        //   />
+        // )}
       />
     );
   }
 }
 
-export class Button extends React.Component {
+class Button extends React.Component {
 
   static propTypes = {
     buttonStyle: PropTypes.object,
@@ -231,7 +229,7 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   datePickerLabel: {
-    color: vars.colors.main,
+    color: vars.colors.text,
     fontSize: 16,
     ...Platform.select({
       ios: {
@@ -256,3 +254,13 @@ const styles = StyleSheet.create({
     fontSize: 17
   }
 });
+
+export {
+  Form,
+  Input,
+  TextArea,
+  DateInput,
+  TimeInput,
+  DatetimeInput,
+  Button
+};

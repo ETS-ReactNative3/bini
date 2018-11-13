@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback
 } from 'react-native';
 import Logo from 'components/Logo/Logo.react';
+import {LightStatusBar} from 'components/LightStatusBar/LightStatusBar.react';
 import SignIn from './SignIn/SignIn.react';
 import SignUp from './SignUp/SignUp.react';
 import vars from 'styles/vars';
@@ -33,6 +34,7 @@ export default class Auth extends React.Component {
       <TouchableWithoutFeedback
         onPress={() => Keyboard.dismiss()}
       >
+        <LightStatusBar />
         <View style={styles.container}>
           <Logo />
           <View style={{
