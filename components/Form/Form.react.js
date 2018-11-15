@@ -4,15 +4,12 @@ import {
   View,
   Platform,
   StyleSheet,
-  KeyboardAvoidingView,
-  ScrollView as RNEScrollView
+  KeyboardAvoidingView
 } from 'react-native';
 import {
   Text,
-  Icon,
   Button as RNEButton,
-  Input as RNEInput,
-  colors as RNEColors
+  Input as RNEInput
 } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import LoadingBlockingView from 'components/LoadingBlockingView/LoadingBlockingView.react';
@@ -29,18 +26,31 @@ class Form extends React.Component {
   static defaultProps = {
     isReady: true
   };
-
   render() {
+    const {
+      isReady,
+      children,
+      bottomButton
+    } = this.props;
+    const bottomButtonDisplay = bottomButton
+      ? React.cloneElement(bottomButton, {
+        pushToBottom: true
+      })
+      : null;
     return (
       <KeyboardAvoidingView
         behavior='padding'
         style={{flex: 1}}
       >
-        <ScrollView contentContainerStyle={{padding: 0}}>
-          <Card>
-            {this.props.children}
-            {!this.props.isReady ? <LoadingBlockingView /> : null}
+        <ScrollView>
+          <Card containerStyle={{
+            margin: 0,
+            width: '100%'
+          }}>
+            {children}
+            {!isReady ? <LoadingBlockingView /> : null}
           </Card>
+          {bottomButtonDisplay}
         </ScrollView>
       </KeyboardAvoidingView>
     );
@@ -63,8 +73,9 @@ class NormalizedInput extends React.Component {
 
     return (
       <RNEInput
-        labelStyle={{color: vars.colors.text}}
+        labelStyle={[styles.label]}
         containerStyle={[styles.container, containerStyle]}
+        inputContainerStyle={[styles.inputContainer]}
         errorStyle={[{
           color: vars.colors.error,
           fontWeight: 'bold',
@@ -100,6 +111,10 @@ class TextArea extends React.Component {
         multiline={true}
         numberOfLines={this.props.numberOfLines}
         inputStyle={{height: this.props.numberOfLines * 22}}
+        inputContainerStyle={[styles.inputContainer, {
+          paddingTop: 5,
+          paddingBottom: 5
+        }]}
         {...this.props}
       />
     );
@@ -110,14 +125,12 @@ class NormalizedDatePicker extends React.Component {
   render() {
     const label = this.props.label
       ? (
-        <Text style={styles.datePickerLabel}>
+        <Text style={styles.label}>
           {this.props.label}
         </Text>
       ) : null;
     return (
-      <View
-        style={styles.container}
-      >
+      <View style={styles.container}>
         {label}
         <DatePicker
           confirmBtnText='Confirm'
@@ -158,13 +171,6 @@ class TimeInput extends React.Component {
         {...this.props}
         mode='time'
         format='hh:mm A'
-        // iconComponent={(
-        //   <Icon
-        //     type='font-awesome'
-        //     name='clock-o'
-        //     color={vars.colors.main}
-        //   />
-        // )}
       />
     );
   }
@@ -176,13 +182,6 @@ class DatetimeInput extends React.Component {
       <NormalizedDatePicker
         {...this.props}
         mode='datetime'
-        // iconComponent={(
-        //   <Icon
-        //     type='font-awesome'
-        //     name='calendar-o'
-        //     color={vars.colors.main}
-        //   />
-        // )}
       />
     );
   }
@@ -202,12 +201,11 @@ class Button extends React.Component {
   };
 
   render() {
+    const {buttonStyle, ...passthroughProps} = this.props;
     const buttonStyleWithDefaults = {
       backgroundColor: this.props.backgroundColor,
-      ...this.props.buttonStyle
+      ...buttonStyle
     };
-    // eslint-disable-next-line no-unused-vars
-    const {buttonStyle, ...passthroughProps} = this.props;
     return (
       <RNEButton
         containerStyle={this.props.pushToBottom
@@ -225,12 +223,13 @@ class Button extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 15,
+    marginBottom: 14,
     width: '100%'
   },
-  datePickerLabel: {
+  label: {
     color: vars.colors.text,
-    fontSize: 16,
+    marginBottom: 6,
+    fontSize: 14,
     ...Platform.select({
       ios: {
         fontWeight: 'bold',
@@ -241,11 +240,16 @@ const styles = StyleSheet.create({
       },
     })
   },
+  inputContainer: {
+    borderWidth: 1,
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.25)'
+  },
   datePickerInput: {
     alignItems: 'flex-start',
-    borderColor: RNEColors.grey3,
-    borderWidth: 0,
-    borderBottomWidth: 1,
+    borderWidth: 1,
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.25)',
     paddingLeft: 10,
     paddingRight: 10,
     width: '100%'

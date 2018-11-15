@@ -20,7 +20,7 @@ const colors = {
 };
 
 const sizers = {
-  viewPadding: 20
+  viewPadding: 14
 };
 
 export default {
