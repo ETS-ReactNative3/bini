@@ -184,7 +184,6 @@ class EventsByDate extends React.Component {
       });
     } else {
       filteredEvents = events.filter((evts, startDate) => {
-        return false;
         return !startDate;
       });
     }
