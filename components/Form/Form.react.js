@@ -9,7 +9,8 @@ import {
 import {
   Text,
   Button as RNEButton,
-  Input as RNEInput
+  Input as RNEInput,
+  ButtonGroup as RNEButtonGroup
 } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import LoadingBlockingView from 'components/LoadingBlockingView/LoadingBlockingView.react';
@@ -221,6 +222,52 @@ class Button extends React.Component {
   }
 }
 
+class ButtonGroup extends React.Component {
+
+  static defaultProps = {
+    selectedButtonStyle: {},
+    containerStyle: {},
+    textStyle: {},
+    innerBorderStyle: {}
+  }
+
+  render() {
+    const {
+      selectedButtonStyle,
+      containerStyle,
+      textStyle,
+      innerBorderStyle,
+      ...rest
+    } = this.props;
+    return (
+      <RNEButtonGroup
+        {...rest}
+        selectedButtonStyle={{
+          backgroundColor: vars.colors.main,
+          ...selectedButtonStyle
+        }}
+        containerStyle={{
+          borderRadius: 4,
+          borderWidth: 2,
+          borderColor: vars.colors.main,
+          backgroundColor: 'transparent',
+          ...containerStyle
+        }}
+        textStyle={{
+          color: vars.colors.main,
+          fontWeight: 'bold',
+          ...textStyle
+        }}
+        innerBorderStyle={{
+          color: vars.colors.main,
+          width: 2,
+          ...innerBorderStyle
+        }}
+      />
+    );
+  }
+}
+
 const styles = StyleSheet.create({
   container: {
     marginBottom: 14,
@@ -266,5 +313,6 @@ export {
   DateInput,
   TimeInput,
   DatetimeInput,
-  Button
+  Button,
+  ButtonGroup
 };

@@ -8,8 +8,7 @@ import {
 } from 'react-native';
 import {
   Text,
-  Icon,
-  ButtonGroup
+  Icon
 } from 'react-native-elements';
 import moment from 'moment';
 
@@ -21,6 +20,7 @@ import {eventsListStore} from 'stores/EventsList/EventsList.store';
 import {LightStatusBar} from 'components/LightStatusBar/LightStatusBar.react';
 import Logo from 'components/Logo/Logo.react';
 import Event from 'components/Event/Event.react';
+import {ButtonGroup} from 'components/Form/Form.react';
 import vars from 'styles/vars';
 
 export default class Home extends React.Component {
@@ -134,6 +134,7 @@ class EventsByDate extends React.Component {
     const label = startDate
       ? (
         <Text style={{
+          color: vars.colors.text,
           marginTop: isFirst ? 10 : 22,
           marginLeft: 15,
           fontWeight: 'bold'
