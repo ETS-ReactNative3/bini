@@ -24,7 +24,7 @@ export default class BlankView extends React.Component {
           flex: 1
         }}
       >
-        <LightStatusBar />        
+        <LightStatusBar />
       </View>
     );
   }
