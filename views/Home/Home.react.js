@@ -140,8 +140,7 @@ class EventsByDate extends React.Component {
         }}>
           {moment(startDate, 'YYYY-MM-DD').format('MMM Do, YYYY')}
         </Text>
-      )
-      : 'Not yet scheduled';
+      ) : null;
     return (
       <View
         key={startDate}
