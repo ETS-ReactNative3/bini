@@ -1,5 +1,6 @@
 import {
   OrderedMap,
+  List,
   Map
 } from 'immutable';
 import moment from 'moment';
@@ -73,6 +74,20 @@ class EventsListStore extends Store {
 
   get eventsAsList() {
     return this.events.toList();
+  }
+
+  get eventsGroupedByStartDate() {
+    return this.events.reduce((acc, evt) => {
+      const startDate = evt.startDate;
+      if (!acc.has(startDate)) {
+        acc = acc.set(startDate, List());
+      }
+      return acc.update(startDate, (list) => list.push(evt));
+    }, OrderedMap());
+  }
+
+  get hasEvents() {
+    return !this.eventsAsList.isEmpty();
   }
 }
 

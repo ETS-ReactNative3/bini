@@ -3,12 +3,15 @@ import PropTypes from 'prop-types';
 import {
   View,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  StyleSheet
 } from 'react-native';
 import {
   Text,
-  Icon
+  Icon,
+  ButtonGroup
 } from 'react-native-elements';
+import moment from 'moment';
 
 import {dispatch} from 'lib/bosque';
 import makeNavigationHeader from 'lib/makeNavigationHeader';
@@ -50,34 +53,17 @@ export default class Home extends React.Component {
   };
 
   renderEvents() {
-    if (eventsListStore.eventsAsList.isEmpty()) {
+    if (!eventsListStore.hasEvents) {
       return (
-        <Text style={{
-          color: vars.colors.textMeta,
-          fontWeight: 'bold',
-          fontStyle: 'italic',
-          textAlign: 'center',
-          paddingTop: 40
-        }}>
+        <Text style={styles.emptyStateText}>
           {'You don\'t have any upcoming events\n\nGo ahead and get something going!'}
         </Text>
       );
     }
 
-    return eventsListStore.eventsAsList.toJS().map((event) => (
-      <TouchableOpacity
-        key={event.id}
-        activeOpacity={0.5}
-        onPress={() => {
-          this.props.navigation.navigate({
-            routeName: 'Event',
-            params: {event}
-          });
-        }}
-      >
-        <Event event={event} />
-      </TouchableOpacity>
-    ));
+    return (
+      <EventsByDate navigation={this.props.navigation} />
+    );
   }
 
   render() {
@@ -123,6 +109,108 @@ export default class Home extends React.Component {
         <AddEventButton
           onPress={this.createEvent}
         />
+      </View>
+    );
+  }
+}
+
+class EventsByDate extends React.Component {
+
+  static dateOptionsObj = {
+    scheduled: 0,
+    past: 1,
+    tbd: 2
+  }
+
+  static dateOptionsArr = ['Scheduled', 'Past', 'TBD'];
+
+  state = {
+    dateOption: EventsByDate.dateOptionsObj.scheduled
+  };
+
+  makeEvents = (events, startDate, iter) => {
+    const isFirst = iter.first() === events;
+    const isLast = iter.last() === events;
+    const label = startDate
+      ? (
+        <Text style={{
+          marginTop: isFirst ? 10 : 22,
+          marginLeft: 15,
+          fontWeight: 'bold'
+        }}>
+          {moment(startDate, 'YYYY-MM-DD').format('MMM Do, YYYY')}
+        </Text>
+      )
+      : 'Not yet scheduled';
+    return (
+      <View
+        key={startDate}
+        style={{
+          flex: 1,
+          paddingBottom: isLast ? 40 : 0
+        }}
+      >
+        {label}
+        {events.map((event) => (
+          <TouchableOpacity
+            key={event.id}
+            activeOpacity={0.5}
+            onPress={() => {
+              this.props.navigation.navigate({
+                routeName: 'Event',
+                params: {event}
+              });
+            }}
+          >
+            <Event event={event} />
+          </TouchableOpacity>
+        ))}
+      </View>
+    );
+  };
+
+  getEventsByDateOption() {
+    const events = eventsListStore.eventsGroupedByStartDate;
+    const {dateOption} = this.state;
+    const today = moment().startOf('day');
+    let filteredEvents;
+    if (dateOption === EventsByDate.dateOptionsObj.scheduled) {
+      filteredEvents = events.filter((evts, startDate) => {
+        return today.isBefore(moment(startDate, 'YYYY-MM-DD'));
+      });
+    } else if (dateOption === EventsByDate.dateOptionsObj.past) {
+      filteredEvents = events.filter((evts, startDate) => {
+        return today.isAfter(moment(startDate, 'YYYY-MM-DD'));
+      });
+    } else {
+      filteredEvents = events.filter((evts, startDate) => {
+        return false;
+        return !startDate;
+      });
+    }
+    return filteredEvents;
+  }
+
+  updateDateOption = (index) => {
+    this.setState({
+      dateOption: index
+    });
+  }
+
+  render() {
+    const events = this.getEventsByDateOption();
+    return (
+      <View style={{flex: 1}}>
+        <ButtonGroup
+          buttons={EventsByDate.dateOptionsArr}
+          selectedIndex={this.state.dateOption}
+          onPress={this.updateDateOption}
+        />
+        {events.isEmpty() ? (
+          <Text style={styles.emptyStateText}>
+            You don't have any {EventsByDate.dateOptionsArr[this.state.dateOption].toLowerCase()} events
+          </Text>
+        ) : this.getEventsByDateOption().map(this.makeEvents).toList()}
       </View>
     );
   }
@@ -183,3 +271,13 @@ class BottomButtonRow extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  emptyStateText: {
+    color: vars.colors.textMeta,
+    fontWeight: 'bold',
+    fontStyle: 'italic',
+    textAlign: 'center',
+    paddingTop: 40
+  }
+});
