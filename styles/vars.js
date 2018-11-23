@@ -1,17 +1,17 @@
 const palette = {
   white: '#FFFFFF',
-  black: '#161616',
+  black: '#151515',
   gray: '#383838',
-  lightGray: '#727272',
-  purple: '#584DA0',
-  whitePurple: '#FBF9FF',
+  lightGray: '#4a4a4a',
+  ultralightGray: '#f3f3f3',
+  purple: '#6740aa',
   skyBlue: '#3C91E6',
   salmon: '#FF595E'
 };
 
 const colors = {
   main: palette.purple,
-  bg: palette.whitePurple,
+  bg: palette.ultralightGray,
   link: palette.skyBlue,
   error: palette.salmon,
   text: palette.black,
@@ -20,7 +20,7 @@ const colors = {
 };
 
 const sizers = {
-  viewPadding: 20
+  viewPadding: 14
 };
 
 export default {

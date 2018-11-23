@@ -8,17 +8,16 @@ import {
 } from 'react-native';
 import {
   Text,
-  Icon,
   Button as RNEButton,
-  Input as RNEInput,
-  colors as RNEColors
+  Input as RNEInput
 } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import LoadingBlockingView from 'components/LoadingBlockingView/LoadingBlockingView.react';
 import {ScrollView} from 'components/ViewComponents/ScrollView.react';
+import {Card} from 'components/Card/Card.react';
 import vars from 'styles/vars';
 
-export class Form extends React.Component {
+class Form extends React.Component {
 
   static propTypes = {
     isReady: PropTypes.bool
@@ -27,16 +26,31 @@ export class Form extends React.Component {
   static defaultProps = {
     isReady: true
   };
-
   render() {
+    const {
+      isReady,
+      children,
+      bottomButton
+    } = this.props;
+    const bottomButtonDisplay = bottomButton
+      ? React.cloneElement(bottomButton, {
+        pushToBottom: true
+      })
+      : null;
     return (
       <KeyboardAvoidingView
         behavior='padding'
         style={{flex: 1}}
       >
         <ScrollView>
-          {this.props.children}
-          {!this.props.isReady ? <LoadingBlockingView /> : null}
+          <Card containerStyle={{
+            margin: 0,
+            width: '100%'
+          }}>
+            {children}
+            {!isReady ? <LoadingBlockingView /> : null}
+          </Card>
+          {bottomButtonDisplay}
         </ScrollView>
       </KeyboardAvoidingView>
     );
@@ -59,8 +73,9 @@ class NormalizedInput extends React.Component {
 
     return (
       <RNEInput
-        labelStyle={{color: vars.colors.main}}
+        labelStyle={[styles.label]}
         containerStyle={[styles.container, containerStyle]}
+        inputContainerStyle={[styles.inputContainer]}
         errorStyle={[{
           color: vars.colors.error,
           fontWeight: 'bold',
@@ -72,7 +87,7 @@ class NormalizedInput extends React.Component {
   }
 }
 
-export class Input extends React.Component {
+class Input extends React.Component {
   render() {
     return (
       <NormalizedInput {...this.props} />
@@ -80,7 +95,7 @@ export class Input extends React.Component {
   }
 }
 
-export class TextArea extends React.Component {
+class TextArea extends React.Component {
 
   static propTypes = {
     numberOfLines: PropTypes.number
@@ -96,6 +111,10 @@ export class TextArea extends React.Component {
         multiline={true}
         numberOfLines={this.props.numberOfLines}
         inputStyle={{height: this.props.numberOfLines * 22}}
+        inputContainerStyle={[styles.inputContainer, {
+          paddingTop: 5,
+          paddingBottom: 5
+        }]}
         {...this.props}
       />
     );
@@ -106,14 +125,12 @@ class NormalizedDatePicker extends React.Component {
   render() {
     const label = this.props.label
       ? (
-        <Text style={styles.datePickerLabel}>
+        <Text style={styles.label}>
           {this.props.label}
         </Text>
       ) : null;
     return (
-      <View
-        style={styles.container}
-      >
+      <View style={styles.container}>
         {label}
         <DatePicker
           confirmBtnText='Confirm'
@@ -126,6 +143,7 @@ class NormalizedDatePicker extends React.Component {
             dateText: styles.datePickerText,
             placeholderText: styles.datePickerText
           }}
+          showIcon={false}
           {...this.props}
         />
       </View>
@@ -133,7 +151,7 @@ class NormalizedDatePicker extends React.Component {
   }
 }
 
-export class DateInput extends React.Component {
+class DateInput extends React.Component {
 
   render() {
     return (
@@ -141,56 +159,35 @@ export class DateInput extends React.Component {
         format='YYYY-MM-DD'
         {...this.props}
         mode='date'
-        iconComponent={(
-          <Icon
-            type='font-awesome'
-            name='calendar-o'
-            color={vars.colors.main}
-          />
-        )}
       />
     );
   }
 }
 
-export class TimeInput extends React.Component {
+class TimeInput extends React.Component {
   render() {
     return (
       <NormalizedDatePicker
         {...this.props}
         mode='time'
         format='hh:mm A'
-        iconComponent={(
-          <Icon
-            type='font-awesome'
-            name='clock-o'
-            color={vars.colors.main}
-          />
-        )}
       />
     );
   }
 }
 
-export class DatetimeInput extends React.Component {
+class DatetimeInput extends React.Component {
   render() {
     return (
       <NormalizedDatePicker
         {...this.props}
         mode='datetime'
-        iconComponent={(
-          <Icon
-            type='font-awesome'
-            name='calendar-o'
-            color={vars.colors.main}
-          />
-        )}
       />
     );
   }
 }
 
-export class Button extends React.Component {
+class Button extends React.Component {
 
   static propTypes = {
     buttonStyle: PropTypes.object,
@@ -204,12 +201,11 @@ export class Button extends React.Component {
   };
 
   render() {
+    const {buttonStyle, ...passthroughProps} = this.props;
     const buttonStyleWithDefaults = {
       backgroundColor: this.props.backgroundColor,
-      ...this.props.buttonStyle
+      ...buttonStyle
     };
-    // eslint-disable-next-line no-unused-vars
-    const {buttonStyle, ...passthroughProps} = this.props;
     return (
       <RNEButton
         containerStyle={this.props.pushToBottom
@@ -227,12 +223,13 @@ export class Button extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 15,
+    marginBottom: 14,
     width: '100%'
   },
-  datePickerLabel: {
-    color: vars.colors.main,
-    fontSize: 16,
+  label: {
+    color: vars.colors.text,
+    marginBottom: 6,
+    fontSize: 14,
     ...Platform.select({
       ios: {
         fontWeight: 'bold',
@@ -243,11 +240,16 @@ const styles = StyleSheet.create({
       },
     })
   },
+  inputContainer: {
+    borderWidth: 1,
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.25)'
+  },
   datePickerInput: {
     alignItems: 'flex-start',
-    borderColor: RNEColors.grey3,
-    borderWidth: 0,
-    borderBottomWidth: 1,
+    borderWidth: 1,
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.25)',
     paddingLeft: 10,
     paddingRight: 10,
     width: '100%'
@@ -256,3 +258,13 @@ const styles = StyleSheet.create({
     fontSize: 17
   }
 });
+
+export {
+  Form,
+  Input,
+  TextArea,
+  DateInput,
+  TimeInput,
+  DatetimeInput,
+  Button
+};

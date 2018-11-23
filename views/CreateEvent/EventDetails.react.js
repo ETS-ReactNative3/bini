@@ -70,10 +70,18 @@ export default class EventDetails extends React.Component {
 
   render() {
     return (
-      <Form>
+      <Form
+        bottomButton={(
+          <Button
+            pushToBottom
+            title='Invite Friends'
+            onPress={this.navigateToInviteFriends}
+          />
+        )}
+      >
         <Input
           label='Name'
-          placeholder='E.g. Pizza Party Fun Times'
+          placeholder='Catching up with friends'
           onChangeText={this.updateName}
           value={this.state.event.name}
           errorMessage={this.state.hasEventError
@@ -94,20 +102,14 @@ export default class EventDetails extends React.Component {
         />
         <Input
           label='Location'
-          placeholder='E.g. 123 Fake St.'
+          placeholder='123 Sweet St'
           onChangeText={this.updateLocation}
           value={this.state.event.location}
         />
         <TextArea
           label='Description'
-          placeholder='What does the future hold in store?'
           onChangeText={this.updateDescription}
           value={this.state.event.description}
-        />
-        <Button
-          pushToBottom
-          title='Invite Friends'
-          onPress={this.navigateToInviteFriends}
         />
       </Form>
     );

@@ -25,9 +25,9 @@ export default class Home extends React.Component {
   static navigationOptions = makeNavigationHeader(({navigation}) => ({
     headerTitle: <Logo fontSize={20} />,
     leftIcon: 'menu',
-    //rightIcon: 'person',
+    rightIcon: 'inbox',
     onLeftPress: navigation.openDrawer,
-    //onRightPress: () => console.log('onRightPress')
+    onRightPress: () => console.log('onRightPress')
   }));
 
   constructor() {
@@ -94,24 +94,28 @@ export default class Home extends React.Component {
         </ScrollView>
         <BottomButtonRow>
           <Icon
-            name='schedule'
+            type='material-community'
+            name='calendar'
+            size={28}
             color={vars.colors.main}
             containerStyle={{backgroundColor: 'transparent'}}
             iconStyle={{
               paddingRight: 15,
-              paddingTop: 7.5,
-              paddingBottom: 7.5
+              paddingTop: 7,
+              paddingBottom: 6
             }}
             onPress={() => console.log('tapped plans')}
           />
           <Icon
-            name='inbox'
+            type='material-community'
+            name='compass-outline'
+            size={28}
             color={vars.colors.main}
             containerStyle={{backgroundColor: 'transparent'}}
             iconStyle={{
               paddingLeft: 15,
-              paddingTop: 7.5,
-              paddingBottom: 7.5
+              paddingTop: 7,
+              paddingBottom: 6
             }}
             onPress={() => console.log('tapped inbox')}
           />
