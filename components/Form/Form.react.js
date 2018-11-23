@@ -251,6 +251,7 @@ class ButtonGroup extends React.Component {
           borderWidth: 2,
           borderColor: vars.colors.main,
           backgroundColor: 'transparent',
+          height: 38,
           ...containerStyle
         }}
         textStyle={{
