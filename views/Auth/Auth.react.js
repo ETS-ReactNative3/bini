@@ -34,8 +34,8 @@ export default class Auth extends React.Component {
       <TouchableWithoutFeedback
         onPress={() => Keyboard.dismiss()}
       >
-        <LightStatusBar />
         <View style={styles.container}>
+          <LightStatusBar />
           <Logo />
           <View style={{
             paddingLeft: 15,

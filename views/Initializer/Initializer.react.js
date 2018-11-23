@@ -15,10 +15,6 @@ export default class Initializer extends React.Component {
     }
   }
 
-  state = {
-    isReady: false
-  }
-
   async componentDidMount() {
     await Font.loadAsync({
       'pacifico': require('../../assets/fonts/Pacifico-Regular.ttf')

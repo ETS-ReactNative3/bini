@@ -1,6 +1,5 @@
 import React from 'react';
 import {ScrollView} from 'react-native';
-import {Form} from 'components/Form/Form.react';
 import {Friend} from 'components/Friend/Friend.react';
 import {
   Text
@@ -46,12 +45,15 @@ export default class Friends extends React.Component {
 
   render() {
     return (
-      <Form>
+      <ScrollView
+        style={{
+          flex: 1,
+          padding: 15
+        }}
+      >
         <LightStatusBar />
-        <ScrollView>
-          {this.getFriends()}
-        </ScrollView>
-      </Form>
+        {this.getFriends()}
+      </ScrollView>
     );
   }
 }
