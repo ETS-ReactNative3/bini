@@ -6,15 +6,17 @@ import {
 import {
   Input,
   FormValidationMessage, // @todo: Add this
-  Button,
   Divider
 } from 'react-native-elements';
 import {upperFirst} from 'lodash';
 import validator from 'validator';
 import firebase from 'firebase';
+import Expo from 'expo';
 
 import fire from 'resources/Fire';
 import vars from 'styles/vars';
+
+import {Button} from 'components/Form/Form.react';
 
 export default class SignIn extends React.Component {
 
@@ -45,11 +47,25 @@ export default class SignIn extends React.Component {
 
   signInWithFacebook = async () => {
     return;
-    // @todo: do this
+  };
+
+  signInWithGoogle = async () => {
+    const androidClientId = '545044442094-0smsjslt0hmchuslq10du5capkgre3ji.apps.googleusercontent.com';
+    const iosClientId = '545044442094-052aktbotof9bogna5n8ld42g6v7aue1.apps.googleusercontent.com';
     try {
-      const provider = new firebase.auth.FacebookAuthProvider();
-    } catch (err) {
-      console.log(err);
+      const result = await Expo.Google.logInAsync({
+        androidClientId,
+        iosClientId,
+        scopes: ['profile', 'email'],
+      });
+
+      if (result.type === 'success') {
+        return result.accessToken;
+      } else {
+        return {cancelled: true};
+      }
+    } catch(e) {
+      return {error: true};
     }
   };
 
@@ -77,43 +93,51 @@ export default class SignIn extends React.Component {
           value={password}
           onChangeText={(password) => this.setState({password: password.replace(/\s/g, '')})}
         />
-        <View style={{
-          marginTop: 20,
-          marginBottom: 10
-        }}>
-          <Button
-            disabled={!email || !password}
-            title='Sign In'
-            buttonStyle={{backgroundColor: '#477EFF'}}
-            disabledStyle={{backgroundColor: '#6c7784'}}
-            disabledTitleStyle={{color: '#4b525b'}}
-            // @todo: Do this on successful log in
-            onPress={this.signInWithEmail}
-          />
-        </View>
-        <View style={{
-          marginBottom: 20
-        }}>
-          <Button
-            title='Sign In With Facebook'
-            buttonStyle={{backgroundColor: '#3b5998'}}
-            disabledStyle={{backgroundColor: '#6c7784'}}
-            onPress={this.signInWithFacebook}
-          />
-        </View>
-        <View style={{opacity: 0.25}}>
+        <Button
+          disabled={!email || !password}
+          title='Sign in'
+          buttonStyle={{backgroundColor: '#477EFF'}}
+          disabledStyle={{backgroundColor: '#7D8A99'}}
+          disabledTitleStyle={{color: '#4b525b'}}
+          // @todo: Do this on successful log in
+          onPress={this.signInWithEmail}
+          containerStyle={{
+            marginTop: 10,
+            marginBottom: 10
+          }}
+        />
+        <Button
+          title='Sign in with Facebook'
+          buttonStyle={{backgroundColor: '#3A65C1'}}
+          onPress={this.signInWithFacebook}
+          containerStyle={{
+            marginBottom: 10
+          }}
+        />
+        <Button
+          title='Sign in with Google'
+          buttonStyle={{backgroundColor: '#DC4E41'}}
+          onPress={this.signInWithGoogle}
+          containerStyle={{
+            marginBottom: 20
+          }}
+        />
+        <View
+          style={{
+            opacity: 0.25,
+            marginBottom: 20
+          }}
+        >
           <Divider />
         </View>
-        <View style={{
-          marginTop: 20
-        }}>
-          <Button
-            title='Create Account'
-            buttonStyle={{backgroundColor: '#EDEDF9'}}
-            titleStyle={{color: vars.colors.main}}
-            onPress={this.props.onCreateAccount}
-          />
-        </View>
+        <Button
+          title='Create Account'
+          buttonStyle={{backgroundColor: '#EDEDF9'}}
+          onPress={this.props.onCreateAccount}
+          titleStyle={{
+            color: vars.colors.main
+          }}
+        />
       </View>
     );
   }
