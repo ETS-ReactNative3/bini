@@ -17,6 +17,7 @@ import fire from 'resources/Fire';
 import vars from 'styles/vars';
 
 import {signInWithFacebook} from './facebookLogin';
+import {signInWithGoogle} from './googleLogin';
 
 import {Button} from 'components/Form/Form.react';
 
@@ -58,22 +59,12 @@ export default class SignIn extends React.Component {
   };
 
   signInWithGoogle = async () => {
-    const androidClientId = '545044442094-0smsjslt0hmchuslq10du5capkgre3ji.apps.googleusercontent.com';
-    const iosClientId = '545044442094-052aktbotof9bogna5n8ld42g6v7aue1.apps.googleusercontent.com';
     try {
-      const result = await Expo.Google.logInAsync({
-        androidClientId,
-        iosClientId,
-        scopes: ['profile', 'email'],
-      });
-
-      if (result.type === 'success') {
-        return result.accessToken;
-      } else {
-        return {cancelled: true};
-      }
-    } catch(e) {
-      return {error: true};
+      const result = await signInWithGoogle();
+      console.log('USER: ', result);
+      this.props.navigation.replace('Home');
+    } catch (err) {
+      console.warn(err); // @todo: Handle this. Generic error messaging toast?
     }
   };
 
