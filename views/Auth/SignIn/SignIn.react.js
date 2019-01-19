@@ -16,6 +16,8 @@ import Expo from 'expo';
 import fire from 'resources/Fire';
 import vars from 'styles/vars';
 
+import {signInWithFacebook} from './facebookLogin';
+
 import {Button} from 'components/Form/Form.react';
 
 export default class SignIn extends React.Component {
@@ -46,7 +48,13 @@ export default class SignIn extends React.Component {
   };
 
   signInWithFacebook = async () => {
-    return;
+    try {
+      const {facebookProfileData} = await signInWithFacebook();
+      console.log('USER: ', facebookProfileData);
+      this.props.navigation.replace('Home');
+    } catch (err) {
+      console.warn(err); // @todo: Handle this. Generic error messaging toast?
+    }
   };
 
   signInWithGoogle = async () => {
