@@ -3,6 +3,7 @@ import {
   View,
   StyleSheet
 } from 'react-native';
+import {NavigationActions} from  'react-navigation';
 import {
   Form,
   Input,
@@ -11,6 +12,7 @@ import {
 import {
   Text
 } from 'react-native-elements';
+import fire from 'resources/Fire';
 
 import {LightStatusBar} from 'components/LightStatusBar/LightStatusBar.react';
 import makeNavigationHeader from 'lib/makeNavigationHeader';
@@ -24,13 +26,22 @@ export default class Account extends React.Component {
     onLeftPress: navigation.openDrawer
   }));
 
+  signOut = () => {
+    fire.auth().signOut();
+    this.props.navigation.navigate({
+      routeName: 'Events',
+      action: NavigationActions.navigate({routeName: 'Auth'})
+    });
+  };
+
   render() {
     return (
       <Form>
         <LightStatusBar />
-        <Text style={styles.container}>
-          My account stuff will go here soon...
-        </Text>
+        <Button
+          title='Sign Out'
+          onPress={this.signOut}
+        />
       </Form>
     );
   }

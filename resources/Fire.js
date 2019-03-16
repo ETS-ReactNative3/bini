@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+import * as firebase from 'firebase';
 import 'firebase/firestore';
 import {firebaseConfig} from '../secrets';
 import {makeConstants} from 'lib/makeConstants';
@@ -10,6 +10,7 @@ class Fire {
     this.db.settings({
       timestampsInSnapshots: true
     });
+    this.firebase = firebase;
   }
 
   collections = makeConstants(

@@ -202,10 +202,18 @@ class Button extends React.Component {
   };
 
   render() {
-    const {buttonStyle, ...passthroughProps} = this.props;
+    const {
+      buttonStyle,
+      titleStyle,
+      ...passthroughProps
+    } = this.props;
     const buttonStyleWithDefaults = {
       backgroundColor: this.props.backgroundColor,
       ...buttonStyle
+    };
+    const titleStyleWithDefaults = {
+      fontWeight: '600',
+      ...titleStyle
     };
     return (
       <RNEButton
@@ -216,6 +224,7 @@ class Button extends React.Component {
           }
           : {}}
         buttonStyle={buttonStyleWithDefaults}
+        titleStyle={titleStyleWithDefaults}
         {...passthroughProps}
       />
     );

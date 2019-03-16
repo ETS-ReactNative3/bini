@@ -6,15 +6,20 @@ import {
 import {
   Input,
   FormValidationMessage, // @todo: Add this
-  Button,
   Divider
 } from 'react-native-elements';
 import {upperFirst} from 'lodash';
 import validator from 'validator';
 import firebase from 'firebase';
+import Expo from 'expo';
 
 import fire from 'resources/Fire';
 import vars from 'styles/vars';
+
+import {signInWithFacebook} from './facebookLogin';
+import {signInWithGoogle} from './googleLogin';
+
+import {Button} from 'components/Form/Form.react';
 
 export default class SignIn extends React.Component {
 
@@ -44,12 +49,22 @@ export default class SignIn extends React.Component {
   };
 
   signInWithFacebook = async () => {
-    return;
-    // @todo: do this
     try {
-      const provider = new firebase.auth.FacebookAuthProvider();
+      const {facebookProfileData} = await signInWithFacebook();
+      console.log('USER: ', facebookProfileData);
+      this.props.navigation.replace('Home');
     } catch (err) {
-      console.log(err);
+      console.warn(err); // @todo: Handle this. Generic error messaging toast?
+    }
+  };
+
+  signInWithGoogle = async () => {
+    try {
+      const result = await signInWithGoogle();
+      console.log('USER: ', result);
+      this.props.navigation.replace('Home');
+    } catch (err) {
+      console.warn(err); // @todo: Handle this. Generic error messaging toast?
     }
   };
 
@@ -77,43 +92,51 @@ export default class SignIn extends React.Component {
           value={password}
           onChangeText={(password) => this.setState({password: password.replace(/\s/g, '')})}
         />
-        <View style={{
-          marginTop: 20,
-          marginBottom: 10
-        }}>
-          <Button
-            disabled={!email || !password}
-            title='Sign In'
-            buttonStyle={{backgroundColor: '#477EFF'}}
-            disabledStyle={{backgroundColor: '#6c7784'}}
-            disabledTitleStyle={{color: '#4b525b'}}
-            // @todo: Do this on successful log in
-            onPress={this.signInWithEmail}
-          />
-        </View>
-        <View style={{
-          marginBottom: 20
-        }}>
-          <Button
-            title='Sign In With Facebook'
-            buttonStyle={{backgroundColor: '#3b5998'}}
-            disabledStyle={{backgroundColor: '#6c7784'}}
-            onPress={this.signInWithFacebook}
-          />
-        </View>
-        <View style={{opacity: 0.25}}>
+        <Button
+          disabled={!email || !password}
+          title='Sign in'
+          buttonStyle={{backgroundColor: '#477EFF'}}
+          disabledStyle={{backgroundColor: '#7D8A99'}}
+          disabledTitleStyle={{color: '#4b525b'}}
+          // @todo: Do this on successful log in
+          onPress={this.signInWithEmail}
+          containerStyle={{
+            marginTop: 10,
+            marginBottom: 10
+          }}
+        />
+        <Button
+          title='Sign in with Facebook'
+          buttonStyle={{backgroundColor: '#3A65C1'}}
+          onPress={this.signInWithFacebook}
+          containerStyle={{
+            marginBottom: 10
+          }}
+        />
+        <Button
+          title='Sign in with Google'
+          buttonStyle={{backgroundColor: '#DC4E41'}}
+          onPress={this.signInWithGoogle}
+          containerStyle={{
+            marginBottom: 20
+          }}
+        />
+        <View
+          style={{
+            opacity: 0.25,
+            marginBottom: 20
+          }}
+        >
           <Divider />
         </View>
-        <View style={{
-          marginTop: 20
-        }}>
-          <Button
-            title='Create Account'
-            buttonStyle={{backgroundColor: '#EDEDF9'}}
-            titleStyle={{color: vars.colors.main}}
-            onPress={this.props.onCreateAccount}
-          />
-        </View>
+        <Button
+          title='Create Account'
+          buttonStyle={{backgroundColor: '#EDEDF9'}}
+          onPress={this.props.onCreateAccount}
+          titleStyle={{
+            color: vars.colors.main
+          }}
+        />
       </View>
     );
   }
